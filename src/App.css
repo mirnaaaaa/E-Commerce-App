@@ -610,6 +610,8 @@ padding-top: 25px;
   display: grid;
   justify-items: center;
   padding-top: 60px ;
+  min-height: 581px;
+
 }
 .error {
   color: rgb(88, 86, 86);
