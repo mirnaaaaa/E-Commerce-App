@@ -59,8 +59,8 @@ We'll send you a link to reset your password.
       className='reset-btn'
         onClick={reset}
         >
-            Reset password
-        </button>
+          Continue
+         </button>
        </div>
         
  </div>

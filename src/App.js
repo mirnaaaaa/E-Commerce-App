@@ -221,8 +221,7 @@ const filter = ourShop.filter(item =>
        handleAdd={handleAdd}
        products={products}
        />}/>
-      </Routes>
-<h1>fvgzd</h1>      
+      </Routes> 
     </Router>
 
     </div>

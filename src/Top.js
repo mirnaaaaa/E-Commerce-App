@@ -52,7 +52,7 @@ const hideSearch = () => {
       <div className="search" >
       <Link 
        to="/"
-      className="title"> Mirna's Shop </Link>
+      className="titleNav"> Mirna's Shop </Link>
 <div className="toCategory">
 <Link to="/Category"
 className='toCart' >

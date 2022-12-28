@@ -202,10 +202,10 @@ justify-content: center;
   width: 100%;
  
 }
-.title:hover {
+.titleNav:hover {
   color: rgb(125, 125, 22);
 }
-.title {
+.titleNav {
 text-decoration: none;
 color:#757575;
 font-size: 30px;
