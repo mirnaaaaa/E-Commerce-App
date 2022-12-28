@@ -190,7 +190,9 @@ padding-left: 10px;
 display: flex;
 justify-content: center;
 align-items: center;
-
+}
+.handleWithFooter {
+  min-height: 581px;
 }
 .where {
   display: flex;
@@ -442,8 +444,7 @@ li {
 
 }
 .shopping-cart {
-  width: 850px;
-  height: 423px;
+  min-height: 421px;
   margin: 80px auto;
   background: #FFFFFF;
   border-radius: 6px;
@@ -602,8 +603,8 @@ padding-top: 25px;
 }
 .login {
  display: grid;
+ min-height: 581px;
  justify-items: center;
- padding-top: 60px ;
 }
 .resetPage {
   display: grid;
@@ -754,7 +755,7 @@ padding-top: 60px;
   box-shadow: 0px 5px 10px 0px black;
 }
 .try {
-  height: auto;
+  min-height: 581px;
   padding-top: 50px;
   justify-content: center;
   align-items: center;
@@ -786,12 +787,13 @@ padding: 8px 0;
 height: auto;
 
 }
-
+.DetailsTitle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .isFavDetails {
-display: flex;
-
-
-
+  display: flex;
 }
 .hearts-2Details {
  height: 40px;
@@ -804,8 +806,9 @@ display: flex;
   width: 55px;
 }
 .handleTitleWithFav {
-justify-content: space-between;
   display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .adds  {
 
@@ -835,8 +838,9 @@ justify-content: space-between;
 }
 .footerContacts {
   background-color: black;
-  font-size: 10px;
+  font-size: 15px;
   display: flex;
+  width: 100%; 
   justify-content: center;
   align-items: center;
   color:#757575;

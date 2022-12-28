@@ -222,6 +222,7 @@ const filter = ourShop.filter(item =>
        products={products}
        />}/>
       </Routes> 
+      <Footer />
     </Router>
 
     </div>

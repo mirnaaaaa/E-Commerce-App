@@ -84,7 +84,7 @@ const fav = (item) => {
 const filter = props.categoryItems.filter(item => 
   item.title.toLowerCase().includes(props.theName.toLowerCase())  || item.brand.toLowerCase().includes(props.theName.toLowerCase())  )
   return (
-    <div>
+    <div className='handleWithFooter'>
     <div className='CategoryButtons'>
       <div className="laptops">
       <img className="image " src={'../images/laptops.png'} />

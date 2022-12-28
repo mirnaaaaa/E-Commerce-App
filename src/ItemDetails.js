@@ -3,7 +3,6 @@ import React from 'react'
 import { FaHeart, FaRegHeart} from 'react-icons/fa';
 import {AiOutlineStar, AiTwotoneStar} from "react-icons/ai"
 export default function ItemDetails(props) {
-  const [currentNumber, setCurrentNumber] = React.useState()
     return (
       <div className='try'>
        

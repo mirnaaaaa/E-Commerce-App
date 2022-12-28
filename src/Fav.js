@@ -12,7 +12,7 @@ export default function Fav(props) {
      //props.setOurShop(changeFav)
   }
   return (
-    <div >
+    <div className='handleWithFooter'>
      {props.favIcon.length === 0 && <div className="empty">
       <h1 className="favEmpty">You currently have nothing added to your favorite list.</h1>
      <div className="shopNow-space">
