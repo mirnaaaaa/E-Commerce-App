@@ -1,0 +1,251 @@
+import React from 'react'
+import {FcGoogle} from "react-icons/fc"
+import {GoMarkGithub} from "react-icons/go";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { db, provider, auth} from "./firebaseConfig"
+import { BsFacebook } from "react-icons/bs";
+import {getAuth, 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword, 
+  signInWithPopup, 
+  GithubAuthProvider,
+FacebookAuthProvider,
+updateProfile} from "firebase/auth"
+import { collection, addDoc, getDocs } from 'firebase/firestore'
+import { Link, useNavigate } from 'react-router-dom'
+
+export default function Login({ setSearch, setIsAuth }) {
+    const [isSigUp, setIsSigUp] = React.useState(false)
+    let navigate = useNavigate();
+    const [dataSignUp, setDataSignUp] = React.useState({
+      Name: "",
+      Email: "",
+      Password: ""
+    })
+    const [dataLogin, setDataLogin] = React.useState({
+      Email: "",
+      Password: ""
+    })
+    
+    const auth = getAuth()
+    const database = collection(db, "users")
+
+    const handleInput = (e) => {
+    let input = {[e.target.name] : e.target.value}
+    setDataSignUp({...dataSignUp, ...input})
+    }
+    const handleLoginInput = (e) => {
+      let input = {[e.target.name] : e.target.value}
+      setDataLogin({...dataLogin, ...input})
+      }
+  
+
+    const handleSignup = () => {
+        setIsSigUp(x => !x)
+    }
+
+    const handleSubmit = () => {
+       createUserWithEmailAndPassword(auth, dataSignUp.Email, dataSignUp.Password).then((res) => {
+        addDoc(database, dataSignUp).then(() => {
+          setDataSignUp({
+            Name: "",
+            Email: "",
+            Password: ""
+          })
+          const user = res.user
+          updateProfile(user, {
+            displayName: dataSignUp.Name
+          })
+          toast.success("Sign Up successfully, You will now automatically got to the Shop")
+         // localStorage.setItem("isAuth", true);        
+          setTimeout(() => {
+            setIsAuth(true)
+            setSearch(false)
+            navigate("/")
+          }, 3000)
+        }).catch(error => {
+          toast.error(error.message)})
+       }).catch(error => {
+        
+        toast.error(error.message)})
+    } 
+    const handleLogin = () => {
+     signInWithEmailAndPassword(auth, dataLogin.Email, dataLogin.Password).then ((res) => {
+      setDataLogin({
+        Email: "",
+        Password: ""
+      })
+      
+     // const getData  = getDocs(database);
+      //setUserName(getData.docs.map((item) => {
+        //return {...item.getData(), id: item.id}
+      //}))
+      const user = res.user
+      updateProfile(user, {
+        displayName: dataSignUp.Name
+      })
+      toast.success("Login successfully, You will now automatically got to the Shop")
+     // localStorage.setItem("isAuth", true);
+      setTimeout(() => {
+       setIsAuth(true)
+       setSearch(false)
+       navigate("/")
+      }, 3000)
+     
+     }).catch((error) => toast.error(error.message))      
+    }
+
+const googleSignIn =  () => {
+  signInWithPopup(auth, provider).then((res) => {
+  
+  //const name= result.user.displayName
+  //localStorage.setItem("name" , name)
+  toast.success("Login successfully, You will now automatically got to the Shop")
+  setTimeout(() => {
+    setIsAuth(true)
+    setSearch(false)
+    navigate("/")
+  }, 3000)
+
+}).catch((error) => toast.error(error.message))  
+}
+const githubLogin = () => {
+signInWithPopup(auth, new GithubAuthProvider).then(() => {
+  toast.success("Login successfully, You will now automatically got to the Shop")
+
+  setTimeout(() => {
+    setIsAuth(true)
+    setSearch(false)
+    navigate("/")
+  }, 3000)
+}).catch((error) => toast.error(error.message))  
+}
+const facebookLogin = () => {
+  signInWithPopup(auth, new FacebookAuthProvider).the(() => {
+    toast.success("Login successfully, You will now automatically got to the Shop")
+    setTimeout(() => {
+      setIsAuth(true)
+      setSearch(false)
+      navigate("/")
+    }, 3000)
+  }).catch((error) => toast.error(error.message))  
+}
+
+  return (
+
+    <div className='login'>
+      <ToastContainer />
+      <div className='loginContainer'>
+        {isSigUp ?
+         <>      
+        <div className='signUpContainer'>
+        <div className='name'>
+        <input 
+         className='fullName' 
+        type="text"
+        placeholder="FullName"
+        onChange={(e) => handleInput(e)}
+        name="Name"
+        value={dataSignUp.Name}
+        />
+        </div>
+        <div className='emailHandle'>
+
+        <input 
+        className='fullName' 
+      type="text"
+      placeholder='Email'
+      name="Email"
+      onChange={(e) => handleInput(e)}
+      value={dataSignUp.Email}
+      />
+        </div>
+      <input 
+      className='fullName' 
+      type="password"
+      placeholder='Password'
+      onChange={(e) => handleInput(e)}
+      value={dataSignUp.Password}
+      name="Password"
+      />
+      <div className='moveSignUp'>
+      <button
+        className='SIGNUP'
+      onClick={handleSubmit}>Sign Up</button>
+        </div>
+          </div>
+         <h1  className='register'>Already have an account.. 
+         <button
+         className='goRegister'
+         onClick={handleSignup}>LOGIN</button>
+         </h1>
+        </> : 
+        <>
+         <h1 className='welcomeBack'>welcome back!</h1>
+         <div className='loginData'>
+         <input className='loginEmail' 
+         type="text"
+         placeholder='Email....'
+         onChange={(e) => handleLoginInput(e)}
+         name="Email"
+        value={dataLogin.Email}
+        />
+        </div>
+      <input 
+      className='loginPassword' 
+      type="password"
+      placeholder='Password'
+      onChange={(e) => handleLoginInput(e)}
+      name="Password"
+      value={dataLogin.Password}
+         />
+      <div className='LOGINDiv'>
+      <button
+      className='LOGIN'
+      onClick={handleLogin}>Login</button>
+      </div>
+      <div className='forget'>
+        <Link to='/ResetPassword'
+        className='ResetPassword'
+        >
+          Forget your password?
+        </Link>
+      </div>
+      <h1 className='or'>
+        ______Or_______
+      </h1>
+      
+      <div className='with'>
+      <div className='githubDiv'>
+      <FcGoogle className='google'/>
+      <button  className='googleLogin'
+       onClick={googleSignIn}>Login With Google</button>
+      </div>
+      <div className="githubDiv">
+        <BsFacebook 
+        className='facebook'
+        />
+        <button 
+        className='facebook-btn'
+        onClick={facebookLogin}
+        >Login With Facebook</button>
+      </div>
+       <div className='githubDiv'>
+       <GoMarkGithub  className='github'/>
+       <button  className='githubLogin'
+       onClick={githubLogin}>
+        Login With GitHub</button>
+        </div>
+      </div>
+     <h1 className='register'>Don't have an account?
+      <button 
+       className='goRegister'
+     onClick={handleSignup}>Sign Up</button>
+     </h1>
+        </>
+        }
+     </div>
+    </div>
+  )
+}
