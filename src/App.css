@@ -156,13 +156,11 @@ color: rgb(6, 62, 193);
 .nav {
   background-color: black;
 display: flex;
-position: sticky; 
-top: 0;
 height: 80px;
-
  color: rgb(125, 125, 22);
- max-width: 1900px;
- min-width: 900px;
+ position: fixed; 
+ top: 0; 
+ width: 100%; 
 }
 .heart {
   padding: 0 50px;
@@ -189,10 +187,16 @@ width: 300px;
 padding-left: 10px;
 }
 .in {
-margin-top: 20px;
 display: flex;
 justify-content: center;
+align-items: center;
 
+}
+.where {
+  display: flex;
+  justify-content: center;
+align-items: center;
+  padding-top: 100px;
 }
 .search {
   align-items: center;
@@ -861,4 +865,14 @@ justify-content: space-between;
 .hiUser {
   font-size: 20px;  
   border-radius: 35px;
+}
+.googleProfile {
+display: flex;
+padding-top: 20px;
+padding-left: 5px;
+}
+.photoURL {
+  border-radius: 50px;
+  height: 40px;
+
 }

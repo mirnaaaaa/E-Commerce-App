@@ -101,6 +101,12 @@ style={{color: 'red', fontSize: '30px'}}/> </Link>
         {props.isAuth && 
         <div className="user-logOut">
           <h1  className='user'><AiOutlineUserAdd  className='hiUser'/> Hi,  {user.displayName ? user.displayName: name}</h1>
+         <div className='googleProfile'>
+         <img 
+         className='photoURL'
+         src={user.photoURL}/>
+         </div>
+       
        <div className='btn-out'>
        <button 
        className='btn-logOut'
@@ -112,13 +118,16 @@ style={{color: 'red', fontSize: '30px'}}/> </Link>
       </div>
       </div>
       <div className="in" >
-      {!props.search && props.products.length === 0 && <input  className="input"
+        <div className='where'>
+        {!props.search && props.products.length === 0 && <input  className="input"
       placeholder='Search By Name Or Brand....'
        type="text"
        name={props.theName}
        value={props.theName}
        onChange={(e) => props.setTheName(e.target.value)}
        />}
+        </div>
+     
        
        </div>
     </div>
