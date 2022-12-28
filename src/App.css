@@ -854,3 +854,11 @@ justify-content: space-between;
   padding-top: 20px;
 
 }
+.hiUser:hover {
+  background-color: rgb(125, 125, 22);
+  color: #000;
+}
+.hiUser {
+  font-size: 20px;  
+  border-radius: 35px;
+}

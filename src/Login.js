@@ -53,10 +53,10 @@ export default function Login({ setSearch, setIsAuth }) {
             Email: "",
             Password: ""
           })
-          const user = res.user
-          updateProfile(user, {
-            displayName: dataSignUp.Name
-          })
+          //const user = res.user
+          //updateProfile(user, {
+            //displayName: dataSignUp.Name
+          //})
           toast.success("Sign Up successfully, You will now automatically got to the Shop")
          // localStorage.setItem("isAuth", true);        
           setTimeout(() => {
@@ -81,10 +81,7 @@ export default function Login({ setSearch, setIsAuth }) {
       //setUserName(getData.docs.map((item) => {
         //return {...item.getData(), id: item.id}
       //}))
-      const user = res.user
-      updateProfile(user, {
-        displayName: dataSignUp.Name
-      })
+ 
       toast.success("Login successfully, You will now automatically got to the Shop")
      // localStorage.setItem("isAuth", true);
       setTimeout(() => {

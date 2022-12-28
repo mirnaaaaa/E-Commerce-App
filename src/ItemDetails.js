@@ -3,14 +3,16 @@ import React from 'react'
 import { FaHeart, FaRegHeart} from 'react-icons/fa';
 import {AiOutlineStar, AiTwotoneStar} from "react-icons/ai"
 export default function ItemDetails(props) {
+  const [currentNumber, setCurrentNumber] = React.useState()
     return (
       <div className='try'>
        
         <div className='detailsContainer'>
        
      <div className='rows'>
-     {props.products.images.map(x => (
-          <div className='picrures'>
+     {props.products.images.map((x , index) => (
+          <div className='picrures'
+          key={index}  >
          <img
         className='detailsPicture'
         src={x}/> 

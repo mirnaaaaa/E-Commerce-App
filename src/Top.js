@@ -1,13 +1,14 @@
 import React from 'react'
 import { Link } from "react-router-dom"
 import { FaHeart, FaRegHeart, FaSearch } from 'react-icons/fa'
+import { AiOutlineUserAdd } from "react-icons/ai";
 import {auth, db} from "./firebaseConfig"
 import { collection, getDocs } from 'firebase/firestore'
 import { useAuthState } from "react-firebase-hooks/auth";
-import { signOut } from "firebase/auth"
+import { signOut, onAuthStateChanged } from "firebase/auth"
 import { useNavigate } from 'react-router-dom'
 export default function Top(props) {
-
+const [name, setName] = React.useState("")
   const [ user ] = useAuthState(auth);
 let navigate = useNavigate();
 const handleLogout = () => {
@@ -18,14 +19,21 @@ const handleLogout = () => {
     props.setSearch(true)
   })
 }
+React.useEffect(() => {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      if(user.displayName === null) {
+  const email = user.email.substring(0, user.email.indexOf("@"))
+const makeTheName = email.charAt(0).toUpperCase()  + email.slice(1)
+setName(makeTheName)
+      }
+      props.setIsAuth(true)
+    } else {
+      props.setIsAuth(false)
+    }
+  });
+}, [])
 
-auth.onAuthStateChanged(function(user) {
-  if (user) {
-    props.setIsAuth(true)
-  } else {
-    props.setIsAuth(false)
-  }
-});
 //React.useEffect(() => {
   // const getInfo = async () => {
     //const  data = await getDocs(database)
@@ -92,8 +100,7 @@ style={{color: 'red', fontSize: '30px'}}/> </Link>
         to="/Login" >LOGIN</Link>}
         {props.isAuth && 
         <div className="user-logOut">
-          {user.displayName && <h1  className='user'>Hello, {user.displayName}</h1>}
-          {!user.displayName && <h1  className='user'>Welcome, {user.email}</h1>}
+          <h1  className='user'><AiOutlineUserAdd  className='hiUser'/> Hi,  {user.displayName ? user.displayName: name}</h1>
        <div className='btn-out'>
        <button 
        className='btn-logOut'
