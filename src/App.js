@@ -11,6 +11,11 @@ import Login from "./Login"
 import ItemDetails from "./ItemDetails"
 import Footer from "./Footer"
 import ResetPassword from "./ResetPassword"
+import {onAuthStateChanged } from "firebase/auth"
+import {auth, db} from "./firebaseConfig"
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { collection } from 'firebase/firestore'
 
 export default function App() {
   const [ourShop, setOurShop] = React.useState( [])
@@ -22,7 +27,10 @@ const [sum, setSum] = React.useState(0)
 const [isAuth, setIsAuth] = React.useState(false)
 const [search, setSearch] = React.useState(false)
 const [products, setProducts] = React.useState([])
-  React.useEffect(() => {
+const [userId, setUserId] = React.useState(null)
+
+
+React.useEffect(() => {
     fetch('https://dummyjson.com/products')
     .then(res => res.json())
     .then(data =>  {   
@@ -50,7 +58,25 @@ React.useEffect(() => {
      setSum(sum)
     }
    },[cart])
-const handleAdd = (item) => {
+
+   React.useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+    if (user) {
+      setUserId(user.uid)
+    } else {
+      setUserId(null)
+    }
+    })
+   }, [])
+  let item;
+const handleAdd = (item) => { 
+if (userId === null) {
+ 
+ toast.error("Please login first.")
+ setTimeout(() => {
+  window.location.pathname = "/Login"
+}, 3000)
+} else {
 const selected = cart.find(x => x.id === item.id)
 if(selected) {
   const toAdd = cart.map((x) =>
@@ -70,6 +96,9 @@ if(selected) {
 }else {
   setCart([...cart,{ ...item, quantity: 1 }])
 }
+}
+
+
  }
  
 const openItem = (item) => {
@@ -157,7 +186,8 @@ const filter = ourShop.filter(item =>
   <li>Check your spelling</li>
   </div>
   return (
-    <div className="app">    
+    <div className="app">
+      <ToastContainer />    
     <Router>
     <Top
     setIsAuth={setIsAuth}
