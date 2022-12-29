@@ -47,16 +47,19 @@ export default function Login({ setSearch, setIsAuth }) {
 
     const handleSubmit = () => {
        createUserWithEmailAndPassword(auth, dataSignUp.Email, dataSignUp.Password).then((res) => {
+       // const user= res.user
         addDoc(database, dataSignUp).then(() => {
           setDataSignUp({
             Name: "",
             Email: "",
             Password: ""
           })
-          //const user = res.user
-          //updateProfile(user, {
-            //displayName: dataSignUp.Name
-          //})
+          const user = res.user
+          updateProfile(user, {
+         displayName: dataSignUp.Name
+          })
+    //  console.log(user)
+          
           toast.success("Sign Up successfully, You will now automatically got to the Shop")
          // localStorage.setItem("isAuth", true);        
           setTimeout(() => {
@@ -76,7 +79,10 @@ export default function Login({ setSearch, setIsAuth }) {
         Email: "",
         Password: ""
       })
-      
+      const user = res.user
+      updateProfile(user, {
+     displayName: dataSignUp.Name
+      })
      // const getData  = getDocs(database);
       //setUserName(getData.docs.map((item) => {
         //return {...item.getData(), id: item.id}
@@ -119,7 +125,7 @@ signInWithPopup(auth, new GithubAuthProvider).then(() => {
 }).catch((error) => toast.error(error.message))  
 }
 const facebookLogin = () => {
-  signInWithPopup(auth, new FacebookAuthProvider).the(() => {
+  signInWithPopup(auth, new FacebookAuthProvider()).the(() => {
     toast.success("Login successfully, You will now automatically got to the Shop")
     setTimeout(() => {
       setIsAuth(true)

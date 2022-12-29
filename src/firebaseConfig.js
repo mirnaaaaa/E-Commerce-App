@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
+
 const firebaseConfig = {
   apiKey: "AIzaSyBOgNjTq8KOdqujL29tIyAHVVk1MsyrdgQ",
   authDomain: "fir-frontend-608db.firebaseapp.com",

@@ -22,10 +22,12 @@ const handleLogout = () => {
 React.useEffect(() => {
   onAuthStateChanged(auth, (user) => {
     if (user) {
+      console.log(user)
       if(user.displayName === null) {
   const email = user.email.substring(0, user.email.indexOf("@"))
 const makeTheName = email.charAt(0).toUpperCase()  + email.slice(1)
 setName(makeTheName)
+
       }
       props.setIsAuth(true)
     } else {
