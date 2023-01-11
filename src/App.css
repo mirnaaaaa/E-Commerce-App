@@ -12,7 +12,26 @@ body {
   align-items: center;
   text-align:center; 
   padding: 0;
+  flex-wrap: wrap;
   margin: 0;
+}
+.mode {
+display: flex;
+
+}
+.modeFloat {
+  display: flex;
+padding-top: 30px;
+padding-left: 230px;
+position: fixed;
+}
+
+#light {
+  background-color: #f3ebf6;
+}
+
+#dark {
+  background-color: #121212;
 }
 .cartNumber{
   display: flex;
@@ -188,17 +207,23 @@ padding-left: 10px;
 }
 .in {
 display: flex;
-justify-content: center;
-align-items: center;
+
 }
 .handleWithFooter {
   min-height: 581px;
 }
+.navFlex {
+  display: flex;
+}
 .where {
   display: flex;
+  padding-left: 530px;
   justify-content: center;
+  justify-items: center;
 align-items: center;
+align-content: center;
   padding-top: 100px;
+
 }
 .search {
   align-items: center;
@@ -210,6 +235,14 @@ align-items: center;
 }
 .titleNav:hover {
   color: rgb(125, 125, 22);
+  cursor: pointer;
+}
+.shopTitle:hover {
+  cursor: pointer;
+}
+.shopTitle {
+  font-size: 30px;
+
 }
 .titleNav {
 text-decoration: none;
@@ -446,7 +479,6 @@ li {
 .shopping-cart {
   min-height: 421px;
   margin: 80px auto;
-  background: #FFFFFF;
   border-radius: 6px;
   display: flex;
   flex-direction: column;

@@ -52,34 +52,6 @@ const fragrances = (item) => {
   setSmartphone(false)
   setFragrance(true)
 }
-const fav = (item) => {
-  const selected = props.favIcon.find(x => x.id === item.id) 
-  const changeFav = props.categoryItems.map(x =>{
-   return x.id === item.id ? {...x, isFav: !x.isFav} :  {...x, isFav: x.isFav}
-  } )
-  const changeFavShop = props.ourShop.map(x =>{
-    return x.id === item.id ? {...x, isFav: !x.isFav} :  {...x, isFav: x.isFav}
-   } )
-   props.setOurShop(changeFavShop)
-   props.setCategoryItems(changeFav)
-  if (selected) {
-    props.setFavIcon([...props.favIcon])
-  }else  {
-    props.setFavIcon([...props.favIcon,{ ...item,isFav: !item.isFav}]) 
-  }
- }
- const removeFromFav = (item) => {
-  let task = props.favIcon.filter(x => x.id !== item.id)
-  const changeFav = props.categoryItems.map(x =>{
-    return x.id === item.id ? {...x, isFav: !x.isFav} :  {...x, isFav: x.isFav}
-   } )
-   const changeFavShop = props.ourShop.map(x =>{
-    return x.id === item.id ? {...x, isFav: !x.isFav} :  {...x, isFav: x.isFav}
-   } )
-   props.setOurShop(changeFavShop)
-   props.setCategoryItems(changeFav)
-   props.setFavIcon(task)
- }
 
 const filter = props.categoryItems.filter(item => 
   item.title.toLowerCase().includes(props.theName.toLowerCase())  || item.brand.toLowerCase().includes(props.theName.toLowerCase())  )
@@ -136,11 +108,11 @@ const filter = props.categoryItems.filter(item =>
     <div className="isFav">
     {item.isFav ?
      <FaHeart className="hearts"
-     onClick={() => removeFromFav(item)}
+     onClick={() => props.removeFromFav(item)}
      style={{color: 'red', fontSize: '15px'}} />
      :
     <FaRegHeart className="hearts-2"
-     onClick={() => fav(item)}
+     onClick={() => props.fav(item)}
    style={{color: 'red', fontSize: '15px'}}/>}
     </div>
      
@@ -169,11 +141,11 @@ const filter = props.categoryItems.filter(item =>
    <div className="isFav">
    {item.isFav ?
     <FaHeart className="hearts"
-    onClick={() => removeFromFav(item)}
+    onClick={() =>  props.removeFromFav(item)}
     style={{color: 'red', fontSize: '15px'}} />
     :
    <FaRegHeart className="hearts-2"
-    onClick={() => fav(item)}
+    onClick={() =>  props.fav(item)}
   style={{color: 'red', fontSize: '15px'}}/>}
    </div>
     
@@ -202,11 +174,11 @@ const filter = props.categoryItems.filter(item =>
     <div className="isFav">
     {item.isFav ?
      <FaHeart className="hearts"
-     onClick={() => removeFromFav(item)}
+     onClick={() =>  props.removeFromFav(item)}
      style={{color: 'red', fontSize: '15px'}} />
      :
     <FaRegHeart className="hearts-2"
-     onClick={() => fav(item)}
+     onClick={() =>  props.fav(item)}
    style={{color: 'red', fontSize: '15px'}}/>}
     </div>
      
@@ -235,11 +207,11 @@ const filter = props.categoryItems.filter(item =>
     <div className="isFav">
     {item.isFav ?
      <FaHeart className="hearts"
-     onClick={() => removeFromFav(item)}
+     onClick={() =>  props.removeFromFav(item)}
      style={{color: 'red', fontSize: '15px'}} />
      :
     <FaRegHeart className="hearts-2"
-     onClick={() => fav(item)}
+     onClick={() =>  props.fav(item)}
    style={{color: 'red', fontSize: '15px'}}/>}
     </div>
      
@@ -268,11 +240,11 @@ const filter = props.categoryItems.filter(item =>
     <div className="isFav">
     {item.isFav ?
      <FaHeart className="hearts"
-     onClick={() => removeFromFav(item)}
+     onClick={() =>  props.removeFromFav(item)}
      style={{color: 'red', fontSize: '15px'}} />
      :
     <FaRegHeart className="hearts-2"
-     onClick={() => fav(item)}
+     onClick={() =>  props.fav(item)}
    style={{color: 'red', fontSize: '15px'}}/>}
     </div>
      
@@ -301,11 +273,11 @@ const filter = props.categoryItems.filter(item =>
     <div className="isFav">
     {item.isFav ?
      <FaHeart className="hearts"
-     onClick={() => removeFromFav(item)}
+     onClick={() =>  props.removeFromFav(item)}
      style={{color: 'red', fontSize: '15px'}} />
      :
     <FaRegHeart className="hearts-2"
-     onClick={() => fav(item)}
+     onClick={() =>  props.fav(item)}
    style={{color: 'red', fontSize: '15px'}}/>}
     </div>
      

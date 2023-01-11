@@ -1,28 +1,41 @@
 import { FaHeart, FaRegHeart } from 'react-icons/fa'
 import React from 'react'
+import { doc, deleteDoc, collection, updateDoc, addDoc, getDocs, query } from 'firebase/firestore'
+import { db} from "./firebaseConfig"
+
+
 export default function Cart(props) {
 const [total, setTotal] =React.useState(0)
 const [shipping, setShipping] = React.useState(50)
 
   const handleRemove = (id) => {
-const quantity = props.cart.find(x => x.id === id.id).quantity
+//const quantity = props.cart.find(x => x.id === id.id).quantity
 
- if(quantity === 1 ) {
-  const filter = props.cart.filter((x) => x !== id)
-  props.setCart(filter)
-  const add = props.ourShop.map((x) => 
-  x.id === id.id ? {...x} : x
-  )
-  props.setOurShop(add)
+ if(id.quantity === 1 ) {
+  const docRef = doc(db,`cart/${props.userId}/cartItems/${id.ID}`);
+   deleteDoc(docRef)
+  //const filter = props.cart.filter((x) => x !== id)
+  //props.setCart(filter)
+  //const add = props.ourShop.map((x) => 
+  //x.id === id.id ? {...x} : x
+  //)
+  //props.setOurShop(add)
 } else {
-  const toAdd = props.cart.map((x) =>
-  x.id === id.id ? {...x, quantity: x.quantity - 1} : x)
-  props.setCart(toAdd)
- }
+//  const toAdd = props.cart.map((x) =>
+ // x.id === id.id ? {...x, quantity: x.quantity - 1} : x)
+  //props.setCart(toAdd)
+  const docRef = doc(db,`cart/${props.userId}/cartItems/${id.ID}`);
+  const theNew = {quantity: id.quantity - 1}
+updateDoc(docRef, theNew)
 }
-
-  const removeAll = () => {
-    props.setCart([])
+}
+  const removeAll = async() => {
+   const docRef = collection(db,`cart/${props.userId}/cartItems`);
+   const q = query(docRef);
+   const querySnapshot = await getDocs(q);
+   querySnapshot.forEach((doc) => {
+    deleteDoc(doc.ref);
+  });
    }
 
   React.useEffect(() => {
@@ -30,38 +43,71 @@ const quantity = props.cart.find(x => x.id === id.id).quantity
     let sum = 0
     props.cart.map((x) => {
       sum += ((x.quantity * (x.price * x.discountPercentage) / 100) + shipping)
+    
     })
+
     setTotal(sum.toFixed(2))
    }
   },[props.cart])
   
   const fav = (item) => {
-    const selected = props.favIcon.find(x => x.id === item.id) 
-    const changeFav = props.cart.map(x =>{
-     return x.id === item.id ? {...x, isFav: !x.isFav} :  {...x, isFav: x.isFav}
-    } )
+    //const changeFav = props.cart.map(x =>{
+     //return x.id === item.id ? {...x, isFav: !x.isFav} :  {...x, isFav: x.isFav}
+    //} )
+     
     const changeFavShop = props.ourShop.map(x =>{
       return x.id === item.id ? {...x, isFav: !x.isFav} :  {...x, isFav: x.isFav}
      } )
      props.setOurShop(changeFavShop)
-    props.setCart(changeFav)
-    if (selected) {
-      props.setFavIcon([...props.favIcon])
-    }else  {
-      props.setFavIcon([...props.favIcon,{ ...item,isFav: !item.isFav}]) 
-    }
+   // props.setCart(changeFav)
+       const favItems = collection(db, "cart" , props.userId, "FavoriteList");
+      addDoc(favItems, {
+       ...item,
+       isFav: !item.isFav
+     }, {marge: true});
+     const docRef = doc(db,`cart/${props.userId}/cartItems/${item.ID}`);
+     updateDoc(docRef, {
+        isFav: !item.isFav
+      })
+
+      // props.setFavIcon([...props.favIcon])
+    //else  {
+   
+      // props.setFavIcon([...props.favIcon,{ ...item,isFav: !item.isFav}]) 
+   // }
+   }
+
+   const handleAdd = (item) => {
+    const increaseItem = doc(db,`cart/${props.userId}/cartItems/${item.ID}`);
+    updateDoc(increaseItem, {
+      quantity: item.quantity + 1
+    })
+
    }
    const removeFromFav = (item) => {
-    let task = props.favIcon.filter(x => x.id !== item.id)
-    const changeFav =props.cart.map(x =>{
-      return x.id === item.id ? {...x, isFav: !x.isFav} :  {...x, isFav: x.isFav}
-     } )
+    //let task = props.favIcon.filter(x => x.id !== item.id)
+    //const docRef = doc(db,`cart/${props.userId}/FavoriteList/${item.ID}`);
+    //console.log(docRef)
+    //deleteDoc(docRef)
+    const cartFav = doc(db,`cart/${props.userId}/cartItems/${item.ID}`);
+    updateDoc(cartFav, {
+       isFav: !item.isFav
+     })
+     const inFav =  props.favIcon.find((x) => x.id === item.id ?  x.ID : "")
+     if(inFav) {
+       const docRef = doc(db,`cart/${props.userId}/FavoriteList/${inFav.ID}`);
+       deleteDoc(docRef)
+     }
+  
+    //const changeFav =props.cart.map(x =>{
+      //return x.id === item.id ? {...x, isFav: !x.isFav} :  {...x, isFav: x.isFav}
+     //} )
      const changeFavShop = props.ourShop.map(x =>{
       return x.id === item.id ? {...x, isFav: !x.isFav} :  {...x, isFav: x.isFav}
      } )
      props.setOurShop(changeFavShop)
-     props.setCart(changeFav)
-     props.setFavIcon(task)
+     //props.setCart(changeFav)
+     //props.setFavIcon(task)
    }
 
   return (
@@ -106,7 +152,7 @@ const quantity = props.cart.find(x => x.id === id.id).quantity
   <div className="positive">
   <button
    className="remove"
-   onClick={() => props.handleAdd(item)} >+</button>
+   onClick={() => handleAdd(item)} >+</button>
   </div>
     </div>
     </div>
@@ -117,7 +163,7 @@ const quantity = props.cart.find(x => x.id === id.id).quantity
    </div>
    {props.cart.length !==0  && (<div className="del"> 
     <button className="removeAll" 
-   onClick={ removeAll} >
+   onClick={removeAll} >
     Remove All</button>
     <div className="totalCost">
     <h2 className="shipping">shipping: ${shipping}</h2>

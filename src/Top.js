@@ -11,8 +11,8 @@ export default function Top(props) {
 const [name, setName] = React.useState("")
   const [ user ] = useAuthState(auth);
 let navigate = useNavigate();
-const handleLogout = () => {
-  signOut(auth).then(() => {
+const handleLogout = async() => {
+await  signOut(auth).then(() => {
     navigate("/Login")
     localStorage.clear();
     props.setIsAuth(false)
@@ -22,7 +22,6 @@ const handleLogout = () => {
 React.useEffect(() => {
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      console.log(user)
       if(user.displayName === null) {
   const email = user.email.substring(0, user.email.indexOf("@"))
 const makeTheName = email.charAt(0).toUpperCase()  + email.slice(1)
@@ -57,12 +56,12 @@ const hideSearch = () => {
   props.setSearch(true)
 }
   return (
-    <div>
+    <div className='navFlex'>
     <div className="nav">
       <div className="search" >
       <Link 
        to="/"
-      className="titleNav"> Mirna's Shop </Link>
+      className="titleNav"><h1 className='shopTitle'>Mirna's Shop</h1> </Link>
 <div className="toCategory">
 <Link to="/Category"
 className='toCart' >
@@ -119,7 +118,6 @@ style={{color: 'red', fontSize: '30px'}}/> </Link>
          </div>
       </div>
       </div>
-      <div className="in" >
         <div className='where'>
         {!props.search && props.products.length === 0 && <input  className="input"
       placeholder='Search By Name Or Brand....'
@@ -129,9 +127,6 @@ style={{color: 'red', fontSize: '30px'}}/> </Link>
        onChange={(e) => props.setTheName(e.target.value)}
        />}
         </div>
-     
-       
-       </div>
     </div>
   )
 }
