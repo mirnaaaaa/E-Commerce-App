@@ -125,7 +125,7 @@ signInWithPopup(auth, new GithubAuthProvider).then(() => {
 }).catch((error) => toast.error(error.message))  
 }
 const facebookLogin = () => {
-  signInWithPopup(auth, new FacebookAuthProvider()).the(() => {
+  signInWithPopup(auth, new FacebookAuthProvider).the(() => {
     toast.success("Login successfully, You will now automatically got to the Shop")
     setTimeout(() => {
       setIsAuth(true)

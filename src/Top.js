@@ -101,7 +101,11 @@ style={{color: 'red', fontSize: '30px'}}/> </Link>
         to="/Login" >LOGIN</Link>}
         {props.isAuth && 
         <div className="user-logOut">
+          
           <h1  className='user'><AiOutlineUserAdd  className='hiUser'/> Hi,  {user.displayName ? user.displayName: name}</h1>
+          <Link
+         className='userOrders'
+          to="/MyOrder">myOrders</Link>
          <div className='googleProfile'>
          <img 
          className='photoURL'
@@ -118,15 +122,7 @@ style={{color: 'red', fontSize: '30px'}}/> </Link>
          </div>
       </div>
       </div>
-        <div className='where'>
-        {!props.search && props.products.length === 0 && <input  className="input"
-      placeholder='Search By Name Or Brand....'
-       type="text"
-       name={props.theName}
-       value={props.theName}
-       onChange={(e) => props.setTheName(e.target.value)}
-       />}
-        </div>
+       
     </div>
   )
 }

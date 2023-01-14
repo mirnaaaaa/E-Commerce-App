@@ -12,13 +12,13 @@ export default function Fav(props) {
      //props.setFavIcon([])
      props.setOurShop(changeFav)
   
-     const docRef = collection(db,`cart/${props.userId}/FavoriteList`);
+     const docRef = collection(db,`usersDetails/${props.userId}/FavoriteList`);
      const q = query(docRef, where("isFav", "==", true));
      const querySnapshot = await getDocs(q);
      querySnapshot.forEach((doc) => {
       deleteDoc(doc.ref);
     });
-    const docCart = collection(db,`cart/${props.userId}/cartItems`);
+    const docCart = collection(db,`usersDetails/${props.userId}/cartItems`);
     const Query = query(docCart, where("isFav", "==", true));
     const snap = await getDocs(Query);
     snap.docs.map((doc) => {
@@ -29,11 +29,11 @@ export default function Fav(props) {
 
   }
  const removeFromFav = (item) => {
-  const docRef = doc(db,`cart/${props.userId}/FavoriteList/${item.ID}`);
+  const docRef = doc(db,`usersDetails/${props.userId}/FavoriteList/${item.ID}`);
     deleteDoc(docRef)
     const inCart =  props.cart.find((x) => x.id === item.id ?  x.ID : "")
     if (inCart) {
-     const docRef = doc(db,`cart/${props.userId}/cartItems/${inCart.ID}`);
+     const docRef = doc(db,`usersDetails/${props.userId}/cartItems/${inCart.ID}`);
      updateDoc(docRef, {
       isFav: !item.isFav  
    });

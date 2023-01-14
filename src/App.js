@@ -9,12 +9,14 @@ import Category from "./Category";
 import Fav from "./Fav";
 import Login from "./Login";
 import ItemDetails from "./ItemDetails";
+import CheckOut from "./CheckOut"
 import Footer from "./Footer";
 import ResetPassword from "./ResetPassword";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "./firebaseConfig";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import MyOrder from './MyOrder'
 import {
   addDoc,
   collection,
@@ -26,7 +28,8 @@ import {
   query,
   onSnapshot,
   set,
-  deleteDoc
+  deleteDoc,
+  getCountFromServer
 } from "firebase/firestore";
 import ReactSwitch from "react-switch";
 
@@ -38,14 +41,17 @@ export default function App() {
   const [cart, setCart] = React.useState(
     //JSON.parse(localStorage.getItem("cart")) ||
      [] );
+     const [total, setTotal] =React.useState(0)
   const [favIcon, setFavIcon] = React.useState( []);
-  const [categoryItems, setCategoryItems] = React.useState([]);
+  const [categoryItems, setCategoryItems] = React.useState(JSON.parse(localStorage.getItem("categoryItems")) || []);
   const [sum, setSum] = React.useState(0);
   const [isAuth, setIsAuth] = React.useState(false);
   const [search, setSearch] = React.useState(false);
   const [products, setProducts] = React.useState([]);
   const [userId, setUserId] = React.useState(null);
   const [theme, setTheme] = React.useState("light");
+  const [count, setCount] =  React.useState(0);
+  const [orders, setOrders] =  React.useState([]);
 
   const toggleTheme = () => {
     setTheme((curr) => (curr === "light" ? "dark" : "light"));
@@ -63,10 +69,10 @@ export default function App() {
       });
   }, []);
   
-  //React.useEffect(() => {
-    //localStorage.setItem("cart", JSON.stringify(cart))
+  React.useEffect(() => {
+    localStorage.setItem("categoryItems", JSON.stringify(categoryItems))
     //localStorage.setItem("favIcon", JSON.stringify(favIcon));
- // }, [cart, favIcon]);
+ }, [categoryItems]);
 
   React.useEffect(() => {
     if (cart) {
@@ -119,7 +125,7 @@ export default function App() {
       //setOurShop(add);
       //setCategoryItems(addCategory);
     } else {
-   const docRef = collection(db, "cart", userId, "cartItems");
+   const docRef = collection(db, "usersDetails", userId, "cartItems");
    addDoc(docRef, {
     ...item,
     quantity: 1
@@ -135,7 +141,7 @@ export default function App() {
   };
 
   const getFav = () => {
-    const q = query(collection(db, `cart/${userId}/FavoriteList`));
+    const q = query(collection(db, `usersDetails/${userId}/FavoriteList`));
     onSnapshot(q, (snap) => {
       let array = [];
       snap.forEach((doc) => {
@@ -146,7 +152,7 @@ export default function App() {
   }
  
 const getCart = () => {
-  const items = query(collection(db, `cart/${userId}/cartItems`)) 
+  const items = query(collection(db, `usersDetails/${userId}/cartItems`)) 
   onSnapshot(items, (item) => {
    let array = [];
      item.forEach((doc) => {
@@ -154,12 +160,28 @@ const getCart = () => {
      })
    setCart(array)
  })   
- }   
+ } 
+ const getCount = async() => {
+  const collectionRef = collection(db, `usersDetails/${userId}/Orders`);
+const getTheNumbers = await getCountFromServer(collectionRef);
+   setCount (getTheNumbers.data().count)
+ }
+ const getOrders = () => {
+  const q = query(collection(db, `usersDetails/${userId}/Orders`));
+  onSnapshot(q, (snap) => {
+    let array = [];
+    snap.forEach((doc) => {
+    array.push({ ...doc.data(),  Id: doc.id});
+    });
+    setOrders(array);
+  });
+}
   React.useEffect(() => {
  getCart();
  getFav();
-
-  }, [userId]);
+ getCount();
+ getOrders();
+  }, [userId , count]);
 
   const fav = async (item) => {
     //const selected = favIcon.find((x) => x.id === item.id);
@@ -189,7 +211,7 @@ const getCart = () => {
     setCategoryItems(changeFavDetails)
     setOurShop(changeFav);
   
-      const favItems = collection(db, "cart" , userId, "FavoriteList");
+      const favItems = collection(db, "usersDetails" , userId, "FavoriteList");
        addDoc(favItems, {
         ...item,
         isFav: !item.isFav
@@ -206,7 +228,7 @@ const getCart = () => {
       //setFavIcon([...favIcon,{ ...item, isFav: !item.isFav}])
      const inCart =  cart.find((x) => x.id === item.id ?  x.ID : "")
      if (inCart) {
-      const docRef = doc(db,`cart/${userId}/cartItems/${inCart.ID}`);
+      const docRef = doc(db,`usersDetails/${userId}/cartItems/${inCart.ID}`);
       updateDoc(docRef, {
        isFav: !item.isFav  
     });
@@ -216,13 +238,13 @@ const getCart = () => {
   const removeFromFav = (item) => {
     const inFav =  favIcon.find((x) => x.id === item.id ?  x.ID : "")
     if(inFav) {
-      const docRef = doc(db,`cart/${userId}/FavoriteList/${inFav.ID}`);
+      const docRef = doc(db,`usersDetails/${userId}/FavoriteList/${inFav.ID}`);
       deleteDoc(docRef)
     }
  
     const inCart =  cart.find((x) => x.id === item.id ?  x.ID : "")
     if (inCart) {
-     const docRef = doc(db,`cart/${userId}/cartItems/${inCart.ID}`);
+     const docRef = doc(db,`usersDetails/${userId}/cartItems/${inCart.ID}`);
      updateDoc(docRef, {
       isFav: !item.isFav  
    });
@@ -332,12 +354,18 @@ const getCart = () => {
           <Routes>
             <Route
               path="/"
-              element={<Shop canNotFind={canNotFind} product={product} />}
+              element={<Shop canNotFind={canNotFind}
+              products={products}
+              setTheName={setTheName}
+              search={search}
+               product={product} />}
             />
             <Route
               path="/Cart"
               element={
                 <Cart
+                total={total}
+                setTotal={setTotal}
                   userId={userId}
                   sum={sum}
                   cart={cart}
@@ -364,6 +392,9 @@ const getCart = () => {
                   removeFromFav={removeFromFav}
                   fav={fav}
                   ourShop={ourShop}
+                  products={products}
+                  setTheName={setTheName}
+                  search={search}
                   setOurShop={setOurShop}
                   handleAdd={handleAdd}
                   removeFromFav={removeFromFav}
@@ -402,7 +433,21 @@ const getCart = () => {
                 />
               }
             />
-          </Routes>
+             <Route 
+             path="/CheckOut"
+             element={<CheckOut sum={sum}     
+                         total={total}
+                         userId={userId}
+                         cart={cart}
+             />}
+             />     
+             <Route 
+             path="/MyOrder"
+             element={<MyOrder count={count} 
+                orders={orders}
+             />}
+             />     
+            </Routes>
           <Footer />
         </Router>
       </div>
