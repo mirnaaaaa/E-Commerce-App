@@ -356,7 +356,7 @@ const getTheNumbers = await getCountFromServer(collectionRef);
           </div>
           {!isLoading ?   <div className="div-loading"><ReactLoading 
           className="loading"
-          type={"spinningBubbles"} color={"black"} height={100} width={275} /> </div> : 
+          type={"spinningBubbles"} color={"black"} height={50} width={150} /> </div> : 
 
 <>
 
