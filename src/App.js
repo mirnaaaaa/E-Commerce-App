@@ -32,6 +32,8 @@ import {
   getCountFromServer
 } from "firebase/firestore";
 import ReactSwitch from "react-switch";
+import ReactLoading from 'react-loading';
+
 
 export const ThemeContext = createContext(null);
 
@@ -52,6 +54,7 @@ export default function App() {
   const [theme, setTheme] = React.useState("light");
   const [count, setCount] =  React.useState(0);
   const [orders, setOrders] =  React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const toggleTheme = () => {
     setTheme((curr) => (curr === "light" ? "dark" : "light"));
@@ -66,7 +69,9 @@ export default function App() {
           isFav: false
         }));
         setOurShop(q);
+        setIsLoading(true)
       });
+   
   }, []);
   
   React.useEffect(() => {
@@ -336,7 +341,6 @@ const getTheNumbers = await getCountFromServer(collectionRef);
           <div className="mode">
             <Top
               setIsAuth={setIsAuth}
-              products={products}
               setSearch={setSearch}
               search={search}
               isAuth={isAuth}
@@ -350,6 +354,11 @@ const getTheNumbers = await getCountFromServer(collectionRef);
               <ReactSwitch onChange={toggleTheme} checked={theme === "dark"} />
             </div>
           </div>
+          {!isLoading ?   <div className="div-loading"><ReactLoading 
+          className="loading"
+          type={"spinningBubbles"} color={"black"} height={100} width={275} /> </div> : 
+
+<>
 
           <Routes>
             <Route
@@ -387,7 +396,6 @@ const getTheNumbers = await getCountFromServer(collectionRef);
                   setFavIcon={setFavIcon}
                   favIcon={favIcon}
                   canNotFind={canNotFind}
-                  product={product}
                   theName={theName}
                   removeFromFav={removeFromFav}
                   fav={fav}
@@ -397,7 +405,6 @@ const getTheNumbers = await getCountFromServer(collectionRef);
                   search={search}
                   setOurShop={setOurShop}
                   handleAdd={handleAdd}
-                  removeFromFav={removeFromFav}
                 />
               }
             />
@@ -444,11 +451,13 @@ const getTheNumbers = await getCountFromServer(collectionRef);
              <Route 
              path="/MyOrder"
              element={<MyOrder count={count} 
+             userId={userId}
                 orders={orders}
              />}
              />     
             </Routes>
           <Footer />
+          </>}
         </Router>
       </div>
     </ThemeContext.Provider>

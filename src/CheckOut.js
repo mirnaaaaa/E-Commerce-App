@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link,useNavigate } from 'react-router-dom'
 import { db } from './firebaseConfig'
-import { collection, doc, addDoc, query,onSnapshot } from 'firebase/firestore'
+import { collection, doc, addDoc, query,onSnapshot, serverTimestamp } from 'firebase/firestore'
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -27,7 +27,10 @@ export default function CheckOut(props) {
         const items = collection(db, `usersDetails/${props.userId}/Orders`)
         await addDoc(items, {
          item: item,
-           shippingDetails
+           shippingDetails,
+           time: serverTimestamp(),
+           totalItems: props.sum,
+           cash: props.total
         }).then(() => {
           setShippingDetails({
             FirstName: "",
