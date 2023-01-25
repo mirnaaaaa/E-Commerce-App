@@ -1,19 +1,25 @@
 * {
   box-sizing: border-box;
+  min-width: auto;
+  min-height: auto;
+
 }
 .app{
   color: rgb(125, 125, 22);
-  width: 100%;
   height: auto;
   min-height: 100vh;
+  flex-wrap: wrap;
+  width: 100%; 
+
 }
 body {
   justify-content: center;
   align-items: center;
   text-align:center; 
-  padding: 0;
   flex-wrap: wrap;
-  margin: 0;
+  margin: auto;
+  min-width: auto;
+
 }
 .mode {
 display: flex;
@@ -49,19 +55,29 @@ position: fixed;
    height: 70px;
   }
 .CategoryButtons {
-  display: grid;
-  grid-template-columns:   1fr 1fr 1fr 1fr 1fr 1fr ;
-  padding-top: 25px;
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding-bottom: 35px;
+  
 }
 .btn-items {
   border: none;
-  background-color: white;
+  background-color: #f3ebf6;
   cursor: pointer;
   display: flex;
-  padding-bottom: 25px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 25px;
   font-size: 14px;
-padding-left: 23px;
+  box-shadow: 0px 5px 10px 0px black;
+padding: 0 15px;
+  height: 55px;
+}
+.mobile {
+  
+  padding:0 15px;
 }
 .image {
   width: 130px;
@@ -229,12 +245,10 @@ display: flex;
 }
 .where {
   display: flex;
-  padding-left: 530px;
   justify-content: center;
   justify-items: center;
 align-items: center;
 align-content: center;
-  padding-top: 100px;
 
 }
 .search {
@@ -272,6 +286,7 @@ padding-right: 50px;
 }
 .center {
  padding-left: 20px;
+ padding-top: 125px;
   justify-content: center;
   align-items: center;
   align-content: center;
@@ -302,6 +317,16 @@ margin: 0  5px;
   margin: 15px;
   border-radius: 36px; 
   width: 250px;
+}
+.Cart-items{
+  display: flex;
+  border-right: 1px;
+  font-size: 8px;
+  box-shadow: 0px 5px 10px 0px black;
+  align-items: center;
+  justify-content: space-between;
+  margin: 15px;
+  width: 800px;
 }
 
 .toCart:hover {
@@ -365,7 +390,6 @@ margin: 0 10px;
 }
 .left {
   font-size: 10px;
-  display: flex;
 }
 .remove {
   display: flex;
@@ -396,7 +420,10 @@ border: 2px solid black ;
 .del {
   display: flex;
   justify-content: space-between;
-padding: 25px;
+padding: 45px;
+}
+.remove-pad {
+  padding: 0 65px;
 }
 .check {
   padding-left: 5px;
@@ -496,6 +523,8 @@ li {
   border-radius: 6px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .favNumbers {
   display: flex;
@@ -657,7 +686,7 @@ padding-top: 25px;
   display: grid;
   justify-items: center;
   padding-top: 60px ;
-  min-height: 581px;
+  min-height: 681px;
 
 }
 .error {
@@ -804,8 +833,8 @@ padding-top: 60px;
   box-shadow: 0px 5px 10px 0px black;
 }
 .try {
-  min-height: 581px;
-  padding-top: 50px;
+  min-height: 681px;
+  padding-top: 90px;
   justify-content: center;
   align-items: center;
   align-content: center;
@@ -823,7 +852,7 @@ padding-top: 60px;
  
 }
 
-.picrures {
+.Picture {
 display: flex;
 flex-direction: row;
 padding-right: 5px;
@@ -1035,10 +1064,10 @@ cursor: pointer;
 }
 .orders {
   min-height: 685px;
-  padding-left: 20px;
+  padding-left: 50px;
   display: flex;
-  justify-content: center;
-  align-items: center;
+justify-content: center;
+align-items: center;
   flex-direction: column;
 }
 .allOrders {
@@ -1047,10 +1076,14 @@ cursor: pointer;
   font-size: 15px;
   width: 150px;
   padding: 10px ;
+}
+.center-allOrders {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-left: 20px;
+}
+.orderDecoration {
+  text-decoration: none;
 }
 .orders-container {
   display: flex;
@@ -1061,6 +1094,7 @@ cursor: pointer;
   justify-content: space-between;
   margin: 15px;
   width: 800px;
+  color: rgb(125, 125, 22);
   
 }
 .div-loading {
@@ -1091,6 +1125,12 @@ font-size: 7px;
 }
 .showOrders {
   padding: 25px;
+}
+.delete-Item {
+  font-size: 75px;
+}
+.delete-Item:hover{
+  cursor: pointer;
 }
 .detailsS{
   height: auto;
@@ -1136,4 +1176,9 @@ justify-content: center;
 .cancelOrder:hover {
 box-shadow: 0 -1px 0 red;
 cursor: pointer;
+}
+.order-details {
+  padding-top: 80px;
+  min-height:  685px;
+  ;
 }
