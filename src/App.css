@@ -286,10 +286,26 @@ padding-right: 50px;
 }
 .center {
  padding-left: 20px;
- padding-top: 125px;
+ padding-top: 100px;
   justify-content: center;
   align-items: center;
   align-content: center;
+  min-height: 688px;
+}
+.search-div {
+display: flex;
+align-items: center;
+justify-content: center;
+}
+.search-input {
+height: 50px;
+border-radius: 20px;
+width: 255px;
+}
+.search-icon {
+display: flex;
+margin-left: -30px;
+font-size: 26px;
 }
 .noItemsInSearch{
  padding: 28px;

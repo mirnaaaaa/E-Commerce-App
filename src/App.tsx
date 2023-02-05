@@ -35,20 +35,6 @@ export default function App() {
   const { isLoading } = useContext(ProductsContext) as ProductsType;
   const { theme, toggleTheme } = useContext(ThemeContext) as ThemeType;
 
-  //const filter = ourShop.filter(
-  //  (item) =>
-  //      item.title.toLowerCase().includes(theName.toLowerCase()) ||
-  //    item.brand.toLowerCase().includes(theName.toLowerCase())
-  //  );
-  // const canNotFind = theName && filter.length === 0 && (
-  //   <div className="can-not-find">
-  ///   <h1 className="your-search">
-  //   Your search {theName} didn't match any products.
-  //    </h1>
-  //  <li>Try something else</li>
-  //  <li>Check your spelling</li>
-  // </div>
-  // );
   return (
     <ThemeContextProvider>
       <div className="app" id={theme}>
