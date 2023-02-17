@@ -53,26 +53,6 @@ export default function Navbar({ isAuth, setIsAuth }: props) {
     });
   }, [setIsAuth]);
 
-  //React.useEffect(() => {
-  // const getInfo = async () => {
-  //const  data = await getDocs(database)
-  //setUsersName(data.docs.map((doc) => ({...doc.data(), id: doc.id})))
-  //}
-  //getInfo()
-  //}, [])
-  //React.useEffect(() => {
-  //auth.onAuthStateChanged((user) => {
-  //if (user) {
-  //setUserName(user.displayName)
-  //}else {
-  //  setUserName("")
-  // }
-  //})
-  //},)
-
-  //const hideSearch = () => {
-  //props.setSearch(true)
-  //}
   return (
     <div className="navFlex">
       <div className="nav">

@@ -58,7 +58,7 @@ export default function MyOrders() {
               </div>
               <h1 className="space">Items: ({x.totalItems})</h1>
               <h1 className="space">Cash: ${x.cash}</h1>
-              <h1 className="date">{x.time.toDate().toString()}</h1>
+              <h1 className="date">{x.time.toDate().toDateString()}</h1>
               <br />
             </div>
           </Link>
