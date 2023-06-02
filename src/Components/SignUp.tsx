@@ -2,17 +2,10 @@ import React, { ChangeEvent, useState } from "react";
 import { collection, addDoc } from "firebase/firestore";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { db, auth } from "../firebaseConfig";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {
-  Box,
-  Typography,
-  Stack,
-  TextField,
-  Button,
-  Link
-} from "@mui/material";
+import { Box, Typography, Stack, TextField, Button } from "@mui/material";
 interface props {
   setIsAuth: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -72,7 +65,7 @@ export default function SignUp({ setIsAuth }: props) {
       <Box
         sx={{
           color: "black",
-          width:"555px"
+          width: "555px"
         }}
       >
         <Stack spacing={1}>
@@ -115,19 +108,15 @@ export default function SignUp({ setIsAuth }: props) {
             marginTop: "17px"
           }}
         >
-          <Button onClick={handleSubmit} sx={{ color: "white" }}>SignUp</Button>
+          <Button onClick={handleSubmit} sx={{ color: "white" }}>
+            SignUp
+          </Button>
         </Box>
         <Typography m={1} variant="caption">
           <b> Already have an account.</b>
         </Typography>
-        <Link
-          href="/Login"
-          color="inherit"
-          variant="caption"
-          underline="hover"
-          sx={{ color: "#004d40" }}
-        >
-        SignIn
+        <Link className="linkBlack" to="/Login">
+          <Typography variant="caption">Sign In</Typography>
         </Link>
       </Box>
     </div>

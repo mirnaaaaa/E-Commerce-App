@@ -28,11 +28,10 @@ export default function Category() {
         }}
       >
         <Stack m={1} sx={{ display: "flex", alignItems: "center" }}>
-          
           <Stack spacing={4} direction="row">
-          <Typography variant="h4" sx={{color:"#004d40"}}>
-          Categories
-        </Typography>
+            <Typography variant="h5" sx={{ color: "#004d40" }}>
+              Shop by Category
+            </Typography>
             <Button variant="outlined" onClick={() => choose("groceries")}>
               groceries
             </Button>

@@ -11,15 +11,14 @@ import {
   GithubAuthProvider,
   FacebookAuthProvider
 } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
   Box,
   Typography,
   Divider,
   Stack,
   TextField,
-  Button,
-  Link
+  Button
 } from "@mui/material";
 
 interface props {
@@ -45,19 +44,9 @@ export default function Login({ setIsAuth }: props) {
           Email: "",
           Password: ""
         });
-        //const user = res.user
-        //updateProfile(user, {
-        //displayName: dataSignUp.Name
-        //  })
-        // const getData  = getDocs(database);
-        //setUserName(getData.docs.map((item) => {
-        //return {...item.getData(), id: item.id}
-        //}))
-
         toast.success(
           "Login successfully, You will now automatically go to the Shop"
         );
-        // localStorage.setItem("isAuth", true);
         setTimeout(() => {
           navigate("/");
           setIsAuth(true);
@@ -69,8 +58,6 @@ export default function Login({ setIsAuth }: props) {
   const googleSignIn = () => {
     signInWithPopup(auth, provider)
       .then((res) => {
-        //const name= result.user.displayName
-        //localStorage.setItem("name" , name)
         toast.success(
           "Login successfully, You will now automatically got to the Shop"
         );
@@ -160,50 +147,43 @@ export default function Login({ setIsAuth }: props) {
             Sign in
           </Button>
         </Box>
-        <Link
-          color="inherit"
-          variant="caption"
-          href="/ResetPassword"
-          underline="hover"
-        >
-          Forget your password?
+        <Link className="linkBlack" to="/ResetPassword">
+          <Typography variant="caption">Forget your password?</Typography>
         </Link>
         <Divider>
           <Typography variant="body2">or</Typography>
         </Divider>
-        <Stack spacing={2} direction="row" >
+        <Stack spacing={2} direction="row">
           <Button
-                      variant="outlined"
-                      sx={{color:"black"}}
+            variant="outlined"
+            sx={{ color: "black" }}
             onClick={googleSignIn}
-            startIcon={<GoogleIcon sx={{color:"orange"}}/>}
+            startIcon={<GoogleIcon sx={{ color: "orange" }} />}
           >
             Login With Google
           </Button>
           <Button
             onClick={facebookLogin}
             variant="outlined"
-            sx={{color:"black"}}
-            startIcon={<FacebookIcon sx={{color:"blue"}}/>}
+            sx={{ color: "black" }}
+            startIcon={<FacebookIcon sx={{ color: "blue" }} />}
           >
             Login With Facebook
           </Button>
-          <Button        sx={{color:"black"}}     variant="outlined"
- onClick={githubLogin} startIcon={<GitHubIcon  />}>
+          <Button
+            sx={{ color: "black" }}
+            variant="outlined"
+            onClick={githubLogin}
+            startIcon={<GitHubIcon />}
+          >
             Login With GitHub
           </Button>
         </Stack>
         <Typography m={1} variant="caption">
           <b> Don't have an account?</b>
         </Typography>
-        <Link
-          href="/SignUp"
-          color="inherit"
-          variant="caption"
-          underline="hover"
-          sx={{ color: "#004d40" }}
-        >
-          Sign Up
+        <Link className="linkBlack" to="/SignUp">
+          <Typography variant="caption">SignUp</Typography>
         </Link>
       </Box>
     </div>

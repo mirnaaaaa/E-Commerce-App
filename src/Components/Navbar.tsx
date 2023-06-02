@@ -19,7 +19,6 @@ import {
 } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
-import styled from "@emotion/styled";
 interface props {
   isAuth: boolean;
   setIsAuth: React.Dispatch<React.SetStateAction<boolean>>;
@@ -61,10 +60,6 @@ export default function Navbar({ isAuth, setIsAuth }: props) {
     });
   }, [setIsAuth]);
 
-  const LINK = styled(Link)({
-    color:"inherit"
-  });
-
   return (
     <div>
       <AppBar sx={{ background: "#004d40" }}>
@@ -85,20 +80,20 @@ export default function Navbar({ isAuth, setIsAuth }: props) {
             </Typography>
           </Stack>
           <Stack direction="row" spacing={3}>
-            <Link to="/" >
+            <Link to="/" className="link">
               <Typography>Home</Typography>
             </Link>
-            <Link to="/MyOrder" >
+            <Link to="/MyOrder" className="link">
               <Typography>myOrders</Typography>
             </Link>
           </Stack>
           <Stack spacing={3} direction="row">
-            <Link to="/Fav">
+            <Link to="/Fav" className="link">
               <Badge color="error" badgeContent={favoriteList.length}>
                 <FavoriteBorderIcon />
               </Badge>
             </Link>
-            <Link to="/Cart">
+            <Link to="/Cart" className="link">
               <Badge color="error" badgeContent={sum}>
                 <ShoppingCartCheckoutIcon />
               </Badge>
@@ -107,8 +102,7 @@ export default function Navbar({ isAuth, setIsAuth }: props) {
           <Stack direction="row" spacing={1}>
             {!isAuth ? (
               <>
-                <Link           
- to="/Login" >
+                <Link className="link" to="/Login">
                   LOGIN
                 </Link>
               </>
@@ -122,8 +116,9 @@ export default function Navbar({ isAuth, setIsAuth }: props) {
                   alt="YourProfile"
                   src={user?.photoURL || "www.default.imageurl"}
                 />
-                <Button sx={{color:"white"}} onClick={handleLogout}>
-Log Out                </Button>
+                <Button sx={{ color: "white" }} onClick={handleLogout}>
+                  Log Out
+                </Button>
               </>
             )}
           </Stack>

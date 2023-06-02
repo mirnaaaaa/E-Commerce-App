@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import { auth } from "../firebaseConfig";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
-import { Box, Stack, TextField, Button, Typography, Link } from "@mui/material";
+import { useNavigate, Link } from "react-router-dom";
+import { Box, Stack, TextField, Button, Typography } from "@mui/material";
 
 export default function ResetPassword() {
   const [email, setEmail] = useState<string>("");
@@ -60,7 +60,7 @@ export default function ResetPassword() {
             justifyContent: "space-between"
           }}
         >
-          <Link underline="hover" href="/Login">
+          <Link className="linkBlack"    to="/Login">
             <Button variant="outlined" color="success">
               CANCEL
             </Button>

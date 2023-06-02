@@ -20,10 +20,8 @@ import {
   Typography,
   Tooltip,
   Paper,
-  Stack,
-  Link,
-  styled
-} from "@mui/material";
+  Stack} from "@mui/material";
+import { Link } from "react-router-dom";
 
 export default function Cart() {
   const { cart, setCart, addToCart, total, sum } = useContext(
@@ -49,10 +47,6 @@ export default function Cart() {
     const filter = cart.filter((x) => x.id !== item);
     setCart(filter);
   };
-
-  const LINK = styled(Link)({
-    color: "#e0f2f1"
-  });
 
   return (
     <Box sx={{ marginTop: "68px" }}>
@@ -287,7 +281,7 @@ export default function Cart() {
                     <b>${total}</b>
                   </Typography>
                 </Box>
-                <LINK href="/CheckOut" underline="hover">
+                <Link to="/CheckOut" className="link">
                   <Box
                     m={1}
                     sx={{
@@ -299,7 +293,7 @@ export default function Cart() {
                   >
                     <Button sx={{ color: "white" }}>Checkout NOW</Button>
                   </Box>
-                </LINK>
+                </Link>
               </Box>
             </Paper>
           </Box>
