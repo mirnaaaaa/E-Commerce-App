@@ -2,10 +2,17 @@ import React, { ChangeEvent, useState } from "react";
 import { collection, addDoc } from "firebase/firestore";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { db, auth } from "../firebaseConfig";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import {
+  Box,
+  Typography,
+  Stack,
+  TextField,
+  Button,
+  Link
+} from "@mui/material";
 interface props {
   setIsAuth: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -60,51 +67,69 @@ export default function SignUp({ setIsAuth }: props) {
   };
 
   return (
-    <div className="login">
+    <div className="check-container">
       <ToastContainer />
-      <div className="loginContainer">
-        <div className="signUpContainer">
-          <div className="name">
-            <input
-              className="fullName"
-              type="text"
-              placeholder="FullName"
-              onChange={handleInput}
-              name="Name"
-              value={dataSignUp.Name}
-            />
-          </div>
-          <div className="emailHandle">
-            <input
-              className="fullName"
-              type="text"
-              placeholder="Email"
-              name="Email"
-              onChange={handleInput}
-              value={dataSignUp.Email}
-            />
-          </div>
-          <input
-            className="fullName"
-            type="password"
-            placeholder="Password"
+      <Box
+        sx={{
+          color: "black",
+          width:"555px"
+        }}
+      >
+        <Stack spacing={1}>
+          <TextField
+            onChange={handleInput}
+            name="Name"
+            variant="filled"
+            required
+            value={dataSignUp.Name}
+            label="FullName"
+            color="success"
+          />
+          <TextField
+            onChange={handleInput}
+            value={dataSignUp.Email}
+            name="Email"
+            variant="filled"
+            required
+            label="Email"
+            color="success"
+          />
+          <TextField
             onChange={handleInput}
             value={dataSignUp.Password}
+            variant="filled"
+            label="Password"
+            required
+            type="password"
+            color="success"
             name="Password"
           />
-          <div className="moveSignUp">
-            <button className="SIGNUP" onClick={handleSubmit}>
-              Sign Up
-            </button>
-          </div>
-        </div>
-        <h1 className="register">
-          Already have an account..
-          <Link to="/Login">
-            <button className="goRegister">LOGIN</button>
-          </Link>
-        </h1>
-      </div>
+        </Stack>
+
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            bgcolor: "#004d40",
+            height: "50px",
+            marginTop: "17px"
+          }}
+        >
+          <Button onClick={handleSubmit} sx={{ color: "white" }}>SignUp</Button>
+        </Box>
+        <Typography m={1} variant="caption">
+          <b> Already have an account.</b>
+        </Typography>
+        <Link
+          href="/Login"
+          color="inherit"
+          variant="caption"
+          underline="hover"
+          sx={{ color: "#004d40" }}
+        >
+        SignIn
+        </Link>
+      </Box>
     </div>
   );
 }

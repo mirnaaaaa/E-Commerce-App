@@ -4,6 +4,7 @@ import { ProductsContext } from "../Context/ProductsContext";
 import SelectedCategory from "./SelectedCategory";
 import { ProductsType } from "../Context/ProductsContext";
 import { ProductType } from "../Type";
+import { AppBar, Box, Button, Stack, Divider, Typography } from "@mui/material";
 
 export default function Category() {
   const { ourShop } = useContext(ProductsContext) as ProductsType;
@@ -17,49 +18,78 @@ export default function Category() {
   };
 
   return (
-    <div className="handleWithFooter">
-      <div className="CategoryButtons">
-        <div className="mobile">
-          <button className="btn-items" onClick={() => choose("smartphones")}>
-            smartphones
-          </button>
-        </div>
-        <div className="mobile">
-          <button className="btn-items" onClick={() => choose("laptops")}>
-            laptops
-          </button>
-        </div>
-        <div className="mobile">
-          <button className="btn-items" onClick={() => choose("skincare")}>
-            skincare
-          </button>
-        </div>
-        <div className="mobile">
-          <button className="btn-items" onClick={() => choose("fragrances")}>
-            fragrances
-          </button>
-        </div>
-        <div className="mobile">
-          <button className="btn-items" onClick={() => choose("groceries")}>
-            groceries
-          </button>
-        </div>
-        <div className="mobile">
-          <button
-            className="btn-items"
-            onClick={() => choose("home-decoration")}
-          >
-            home-decoration
-          </button>
-        </div>
-      </div>
-      <div className="theShop">
+    <div>
+      <AppBar
+        sx={{
+          marginTop: "57px",
+          bgcolor: "#e0f2f1",
+          height: "55px",
+          paddingBottom: "50px"
+        }}
+      >
+        <Stack m={1} sx={{ display: "flex", alignItems: "center" }}>
+          
+          <Stack spacing={4} direction="row">
+          <Typography variant="h4" sx={{color:"#004d40"}}>
+          Categories
+        </Typography>
+            <Button variant="outlined" onClick={() => choose("groceries")}>
+              groceries
+            </Button>
+            <Button
+              color="error"
+              variant="outlined"
+              onClick={() => choose("skincare")}
+            >
+              skincare
+            </Button>
+            <Button
+              color="secondary"
+              variant="outlined"
+              onClick={() => choose("smartphones")}
+            >
+              smartphones
+            </Button>
+            <Button
+              color="info"
+              variant="outlined"
+              onClick={() => choose("laptops")}
+            >
+              laptops
+            </Button>
+            <Button
+              color="warning"
+              variant="outlined"
+              onClick={() => choose("fragrances")}
+            >
+              fragrances
+            </Button>
+            <Button
+              color="success"
+              variant="outlined"
+              onClick={() => choose("home-decoration")}
+            >
+              home-decoration
+            </Button>
+          </Stack>
+        </Stack>
+      </AppBar>
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          paddingTop: "85px"
+        }}
+        m={3}
+      >
         {categories?.map((item) => (
-          <div key={item.id}>
+          <Box sx={{ m: 4, maxWidth: "250px" }} key={item.id}>
             <SelectedCategory item={item} />
-          </div>
+          </Box>
         ))}
-      </div>
+        <Divider sx={{ width: "100%", color: "#004d40" }} />
+      </Box>
     </div>
   );
 }

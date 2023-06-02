@@ -1,12 +1,22 @@
 import React from "react";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { FavoriteContext } from "../Context/FavoriteContext";
 import { CartContext } from "../Context/CartContext";
 import { useContext } from "react";
 import { CartType } from "../Context/CartContext";
 import { ProductType } from "../Type";
 import { FavoriteType } from "../Context/FavoriteContext";
-
+import {
+  Box,
+  Card,
+  CardActionArea,
+  IconButton,
+  Button,
+  CardMedia,
+  CardContent,
+  Typography
+} from "@mui/material";
+import FavoriteBorderTwoToneIcon from "@mui/icons-material/FavoriteBorderTwoTone";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 interface PostsProps {
   item: ProductType;
 }
@@ -18,43 +28,89 @@ export default function SelectCategory({ item }: PostsProps) {
   const { addToCart } = useContext(CartContext) as CartType;
 
   return (
-    <div>
-      <div className="items">
-        <img className="pic" src={item.images[2]} alt="productPicture" />
-        <div className="favorite">
-          <h1 className="product-name">
-            Name:
-            {item.title}
-          </h1>
-          <div className="isFav">
+    <Card sx={{ borderRadius: "30px", height: "100%" }}>
+      <CardActionArea sx={{ height: "100%" }}>
+        <Box
+          m={1}
+          sx={{
+            position: "absolute ",
+            right: "0px",
+            bgcolor: "#e0f2f1",
+            borderRadius: "50%"
+          }}
+        >
+          <IconButton aria-label="add to favorites">
             {favoriteList.find((x) => x.id === item.id) ? (
-              <FaHeart
-                className="hearts"
-                onClick={() => removeFromFav(item)}
-                style={{ color: "red", fontSize: "15px" }}
-              />
+              <FavoriteIcon color="error" onClick={() => removeFromFav(item)} />
             ) : (
-              <FaRegHeart
-                className="hearts-2"
+              <FavoriteBorderTwoToneIcon
+                color="error"
                 onClick={() => addToFavorite(item)}
-                style={{ color: "red", fontSize: "15px" }}
               />
             )}
-          </div>
-        </div>
-        <p className="dis">{item.description}</p>
-        <div className="money">
-          <h3 className="dollar">Price: ${item.price}</h3>
-          <h3 className="off">Discount: {item.discountPercentage}%</h3>
-        </div>
-
-        <p className="left"> {item.stock} left in the Store</p>
-        <div className="add">
-          <button className="toCart" onClick={() => addToCart(item)}>
+          </IconButton>
+        </Box>
+        <Box
+          m={0.8}
+          sx={{
+            position: "absolute ",
+            left: "0px",
+            p: "4px",
+            bgcolor: "#004d40",
+            borderRadius: "10%",
+            color: "white"
+          }}
+        >
+          <Typography>-{item.discountPercentage}%</Typography>
+        </Box>
+        <Box
+          sx={{
+            width: "100%",
+            position: "absolute ",
+            alignItems: "center",
+            display: "flex",
+            top: "25%",
+            justifyContent: "center"
+          }}
+        >
+          <Button
+            sx={{
+              fontSize: "0.2px",
+              width: "80%",
+              height: "50px",
+              color: "white",
+              "&:hover": {
+                bgcolor: "#80cbc4",
+                fontSize: "20px",
+                color: "#004d40"
+              }
+            }}
+            onClick={() => addToCart(item)}
+          >
             Add To Cart
-          </button>
-        </div>
-      </div>
-    </div>
+          </Button>
+        </Box>
+        <CardMedia
+          sx={{ height: "250px" }}
+          component={"img"}
+          alt={item.title}
+          src={item.images[0]}
+        />
+        <CardContent sx={{ height: "100%" }}>
+          <Typography
+            sx={{ display: "flex", justifyContent: "center" }}
+            variant="h5"
+          >
+            {item.title}
+          </Typography>
+          <Typography m={1} variant="body2">
+            {item.description}
+          </Typography>
+          <Box m={1} sx={{ position: "absolute", bottom: "0", right: "50%" }}>
+            <Typography variant="body2">${item.price}</Typography>
+          </Box>
+        </CardContent>
+      </CardActionArea>
+    </Card>
   );
 }

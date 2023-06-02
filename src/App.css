@@ -4,22 +4,22 @@
   min-height: auto;
 
 }
-.app{
-  color: rgb(125, 125, 22);
-  height: auto;
-  min-height: 100vh;
-  flex-wrap: wrap;
-  width: 100%; 
-
-}
 body {
+  color: #e0f2f1;
+  min-width: auto;
+color: black;
+}
+.footer {
+  background-color: #004d40;
+  font-size: 12px;
+  display: flex;
+  width: 100%; 
+  position: sticky;
+  top:  100%;
   justify-content: center;
   align-items: center;
-  text-align:center; 
-  flex-wrap: wrap;
-  margin: auto;
-  min-width: auto;
-
+  color:white;
+  height: 3rem;
 }
 .mode {
 display: flex;
@@ -48,12 +48,7 @@ position: fixed;
   justify-content: center;
   align-items: center;
 }
-.navbar {
-  background-color: black;
-    padding: 0.8rem;
-   font-size: 8px;
-   height: 70px;
-  }
+
 .CategoryButtons {
   
   display: flex;
@@ -88,9 +83,8 @@ padding: 0 15px;
 width: 40px;
 }
 .favEmpty {
-  font-size: 15px;
-  display: flex;
-  justify-content: center;
+  color: black;
+
 }
 .shopNow-space {
   display: flex;
@@ -98,7 +92,7 @@ width: 40px;
   padding: 10px;
 }
 .shopLink:hover {
-  color: rgb(125, 125, 22);
+  color: black;
 }
 .shopLink {
   text-decoration: none;
@@ -235,11 +229,7 @@ padding-left: 10px;
 display: flex;
 
 }
-.handleWithFooter {
-  min-height: 681px;
-  padding-top: 125px;
-  width: auto;
-}
+
 .navFlex {
   display: flex;
 }
@@ -273,25 +263,20 @@ align-content: center;
 .titleNav {
 text-decoration: none;
 color:#757575;
-font-size: 30px;
-display: flex;
-margin-left: 20px;
-padding-right: 50px;
 }
 .theShop {
-  height: auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  place-items: center;
+padding-top: 55px;
 }
-.center {
- padding-left: 20px;
- padding-top: 100px;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
-  min-height: 688px;
+.theShops {
+  padding-top: 80px;
 }
+.categories{
+  padding-top: 35px;
+}
+.minHight{
+min-height: 681px;
+}
+
 .search-div {
 display: flex;
 align-items: center;
@@ -392,7 +377,7 @@ font-size: 10px;
 .oldDollar {
   padding-right: 18px;
   text-decoration: line-through;  
-  color:grey;
+  color:rgb(207, 103, 33);
 }
 .dollar {
   padding-right: 35px; 
@@ -930,16 +915,7 @@ height: auto;
 .DetailsLeft {
   padding-bottom: 8px;
 }
-.footerContacts {
-  background-color: black;
-  font-size: 15px;
-  display: flex;
-  width: 100%; 
-  justify-content: center;
-  align-items: center;
-  color:#757575;
-  height: 4rem;
-}
+
 .forget {
   display: flex;
   text-decoration: none;
@@ -974,10 +950,9 @@ padding-left: 5px;
   height: 40px;
 }
 .check-container {
-  min-height: 684px;
-  display: grid;
-  padding-top: 130px;
-  justify-items: center;
+  padding-top: 120px;
+  display: flex;
+  justify-content: center;
 }
 .details {
   height: 500px;
@@ -1078,14 +1053,7 @@ cursor: pointer;
 .space {
   padding: 0 10px;
 }
-.orders {
-  min-height: 685px;
-  padding-left: 50px;
-  display: flex;
-justify-content: center;
-align-items: center;
-  flex-direction: column;
-}
+
 .allOrders {
   box-shadow: 0px 5px 10px 0px black;
   border-radius: 50px;

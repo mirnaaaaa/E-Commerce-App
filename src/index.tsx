@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { ProductsContextProvider } from "./Context/ProductsContext";
-import { ThemeContextProvider } from './Context/ThemeContext';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(
@@ -11,9 +10,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <ProductsContextProvider>
-  <ThemeContextProvider >
   <App />
-  </ThemeContextProvider>
 </ProductsContextProvider>
 );
 

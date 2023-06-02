@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { FaHeart, FaRegHeart, FaSearch } from "react-icons/fa";
-import { AiOutlineUserAdd } from "react-icons/ai";
 import { auth } from "../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { signOut, onAuthStateChanged } from "firebase/auth";
@@ -11,6 +8,19 @@ import { CartContext } from "../Context/CartContext";
 import { FavoriteContext } from "../Context/FavoriteContext";
 import { FavoriteType } from "../Context/FavoriteContext";
 import { CartType } from "../Context/CartContext";
+import {
+  AppBar,
+  Link,
+  Button,
+  Stack,
+  Toolbar,
+  Typography,
+  Avatar,
+  Badge
+} from "@mui/material";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
+import styled from "@emotion/styled";
 interface props {
   isAuth: boolean;
   setIsAuth: React.Dispatch<React.SetStateAction<boolean>>;
@@ -21,7 +31,7 @@ export default function Navbar({ isAuth, setIsAuth }: props) {
   const { favoriteList, setFavoriteList } = useContext(
     FavoriteContext
   ) as FavoriteType;
-  const { cart, setCart, sum } = useContext(CartContext) as CartType;
+  const { setCart, sum } = useContext(CartContext) as CartType;
   const [user] = useAuthState(auth);
 
   let navigate = useNavigate();
@@ -31,7 +41,6 @@ export default function Navbar({ isAuth, setIsAuth }: props) {
       navigate("/Login");
       localStorage.clear();
       setIsAuth(false);
-      // props.setSearch(true)
       setCart([]);
       setFavoriteList([]);
     });
@@ -53,77 +62,75 @@ export default function Navbar({ isAuth, setIsAuth }: props) {
     });
   }, [setIsAuth]);
 
+  const LINK = styled(Link)({
+    color:"inherit",
+    underline:"hover"
+  });
+
   return (
-    <div className="navFlex">
-      <div className="nav">
-        <div className="search">
-          <Link to="/" className="titleNav">
-            <h1 className="shopTitle">Mirna's Shop</h1>
-          </Link>
-          <div className="toCategory">
-            <Link to="/Category" className="toCart">
-              <FaSearch className="fa-search" />
-              Category
-            </Link>
-          </div>
-          <div className="cart">
-            <div className="heart">
-              {favoriteList.length !== 0 ? (
-                <div className="controlFav">
-                  <p className="favNumbers">{favoriteList.length}</p>
-                  <Link to="/Fav">
-                    <FaHeart style={{ color: "red", fontSize: "30px" }} />
-                  </Link>
-                </div>
-              ) : (
-                <Link to="/Fav">
-                  <FaRegHeart style={{ color: "red", fontSize: "30px" }} />
-                </Link>
-              )}
-            </div>
-
-            <div className="cartNumber">
-              <Link className="my" to="/Cart">
-                {cart.length !== 0 && <h1 className="number">{sum}</h1>}
-                <h1 className="img">🛒</h1>
-              </Link>
-            </div>
-
+    <div>
+      <AppBar sx={{ background: "#004d40" }}>
+        <Toolbar
+          sx={{ display: "flex", justifyContent: "space-between", m: "2px" }}
+        >
+          <Stack direction="row" spacing={1}>
+            <Avatar
+              sx={{
+                background: "#80cbc4",
+                color: "#004d40"
+              }}
+            >
+              M
+            </Avatar>
+            <Typography variant="h4">
+              Mirna's <b style={{ color: "#80cbc4" }}>Shop</b>
+            </Typography>
+          </Stack>
+          <Stack direction="row" spacing={3}>
+            <LINK href="/" underline="hover">
+              <Typography>Home</Typography>
+            </LINK>
+            <LINK href="/MyOrder" underline="hover">
+              <Typography>myOrders</Typography>
+            </LINK>
+          </Stack>
+          <Stack spacing={3} direction="row">
+            <LINK href="/Fav">
+              <Badge color="error" badgeContent={favoriteList.length}>
+                <FavoriteBorderIcon />
+              </Badge>
+            </LINK>
+            <LINK href="/Cart">
+              <Badge color="error" badgeContent={sum}>
+                <ShoppingCartCheckoutIcon />
+              </Badge>
+            </LINK>
+          </Stack>
+          <Stack direction="row" spacing={1}>
             {!isAuth ? (
               <>
-                <Link className="nextToCART" to="/Login">
+                <LINK           
+ href="/Login" >
                   LOGIN
-                </Link>
+                </LINK>
               </>
             ) : (
               <>
-                <div className="user-logOut">
-                  <h1 className="user">
-                    <AiOutlineUserAdd className="hiUser" /> Hi,
-                    {user?.displayName ? user.displayName : name}
-                  </h1>
-                  <Link className="userOrders" to="/MyOrder">
-                    myOrders
-                  </Link>
-                  <div className="googleProfile">
-                    <img
-                      alt="YourProfile"
-                      className="photoURL"
-                      src={user?.photoURL || "www.default.imageurl"}
-                    />
-                  </div>
-
-                  <div className="btn-out">
-                    <button className="btn-logOut" onClick={handleLogout}>
-                      Log Out
-                    </button>
-                  </div>
-                </div>
+                <Typography sx={{ paddingTop: "7px" }}>
+                  Hi,
+                  {user?.displayName ? user.displayName : name}
+                </Typography>
+                <Avatar
+                  alt="YourProfile"
+                  src={user?.photoURL || "www.default.imageurl"}
+                />
+                <Button sx={{color:"white"}} onClick={handleLogout}>
+Log Out                </Button>
               </>
             )}
-          </div>
-        </div>
-      </div>
+          </Stack>
+        </Toolbar>
+      </AppBar>
     </div>
   );
 }

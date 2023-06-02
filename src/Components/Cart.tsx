@@ -1,12 +1,29 @@
-import { FaHeart, FaRegHeart } from "react-icons/fa";
 import React from "react";
-import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { CartContext } from "../Context/CartContext";
-import { AiOutlineDelete } from "react-icons/ai";
 import { FavoriteContext } from "../Context/FavoriteContext";
 import { CartType } from "../Context/CartContext";
 import { FavoriteType } from "../Context/FavoriteContext";
+import FavoriteBorderTwoToneIcon from "@mui/icons-material/FavoriteBorderTwoTone";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import RemoveIcon from "@mui/icons-material/Remove";
+import AddIcon from "@mui/icons-material/Add";
+import {
+  Card,
+  CardActionArea,
+  Box,
+  IconButton,
+  Button,
+  CardMedia,
+  CardContent,
+  Typography,
+  Tooltip,
+  Paper,
+  Stack,
+  Link,
+  styled
+} from "@mui/material";
 
 export default function Cart() {
   const { cart, setCart, addToCart, total, sum } = useContext(
@@ -18,8 +35,6 @@ export default function Cart() {
 
   const handleRemove = (id: number, q: number) => {
     if (q === 1) {
-      // const docRef = doc(db,`usersDetails/${props.userId}/cartItems/${id.ID}`);
-      //deleteDoc(docRef)
       const filter = cart.filter((x) => x.id !== id);
       setCart(filter);
     } else {
@@ -35,101 +50,261 @@ export default function Cart() {
     setCart(filter);
   };
 
-  const removeAll = () => {
-    setCart([]);
-  };
+  const LINK = styled(Link)({
+    color: "#e0f2f1"
+  });
 
   return (
-    <div className="shopping-cart">
-      <div>
-        {cart.length === 0 ? <h1 className="cartEmpty"> Cart: (Empty)</h1> : ""}
-        <div className="theCart">
-          {cart.map((item) => (
-            <div key={item.id} className="Cart-items">
-              <img className="pic" alt="itemImage" src={item.images[2]} />
-              <div className="favorite">
-                <h1 className="product-name">
-                  Name:
-                  {item.title}
-                </h1>
-                <div className="isFav">
-                  {favoriteList.find((x) => x.id === item.id) ? (
-                    <FaHeart
-                      className="hearts"
-                      onClick={() => removeFromFav(item)}
-                      style={{ color: "red", fontSize: "15px" }}
-                    />
-                  ) : (
-                    <FaRegHeart
-                      className="hearts-2"
-                      onClick={() => addToFavorite(item)}
-                      style={{ color: "red", fontSize: "15px" }}
-                    />
-                  )}
-                </div>
-              </div>
-              <p className="dis">{item.description}</p>
-              <div className="money">
-                <h3 className="oldDollar">Price: ${item.price}</h3>
-                <h3>discount: {item.discountPercentage}%</h3>
-                <h3 className="dollar">
-                  Total: $
-                  {item.quantity > 1
-                    ? (
-                        (item.price * item.quantity * item.discountPercentage) /
-                        100
-                      ).toFixed(2)
-                    : ((item.price * item.discountPercentage) / 100).toFixed(2)}
-                </h3>
-              </div>
-
-              <p className="left">{item.stock} left in the Store</p>
-              <div className="removeId">
-                <div className="negative">
-                  <button
-                    className="remove"
-                    onClick={() => handleRemove(item.id, item.quantity)}
-                  >
-                    -
-                  </button>
-                </div>
-                <h2 className="havingItems"> ({item.quantity}) </h2>
-                <div className="positive">
-                  <button className="remove" onClick={() => addToCart(item)}>
-                    +
-                  </button>
-                </div>
-              </div>
-              <AiOutlineDelete
-                onClick={() => deleteItem(item.id)}
-                className="delete-Item"
-              />
-            </div>
-          ))}
-        </div>
-      </div>
-      {cart.length !== 0 && (
-        <div className="del">
-          <div className="remove-pad">
-            <button className="removeAll" onClick={removeAll}>
-              Remove All
-            </button>
-          </div>
-          <div className="totalCost">
-            <h2 className="shipping">shipping: $50</h2>
-            <h2 className="total">total price: ${total}</h2>
-
-            <div className="check">
-              <Link to="/CheckOut">
-                <button className="letsCheck">
-                  CHECKOUT(
-                  {sum})
-                </button>
-              </Link>
-            </div>
-          </div>
-        </div>
+    <Box sx={{ marginTop: "68px" }}>
+      {cart.length === 0 && (
+        <Box
+          sx={{
+            paddingTop: "80px",
+            color: "#004d40",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center"
+          }}
+        >
+          <Typography variant="h5"> Your shopping cart looks empty</Typography>
+          <Typography m={1} variant="caption">
+            What are you waiting for?
+          </Typography>
+          <Box m={2}>
+            <Button
+              variant="contained"
+              sx={{
+                bgcolor: "#004d40",
+                "&:hover": {
+                  bgcolor: "#80cbc4",
+                  fontSize: "15px",
+                  color: "#004d40"
+                }
+              }}
+            >
+              START SHOPPING
+            </Button>
+          </Box>
+        </Box>
       )}
-    </div>
+      <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={2}>
+        <Box gridColumn="span 9">
+          {cart.map((item) => (
+            <Box m={1.5}>
+              <Card>
+                <Box
+                  key={item.id}
+                  sx={{ display: "flex", flexDirection: "row", width: "100%" }}
+                >
+                  <CardActionArea sx={{ display: "flex", width: "100%" }}>
+                    <CardMedia
+                      sx={{
+                        height: "200px",
+                        width: "160px",
+                        display: "flex",
+                        marginLeft: "10px"
+                      }}
+                      component={"img"}
+                      alt={item.title}
+                      src={item.images[1]}
+                    />
+                    <CardContent sx={{ display: "flex", width: "100%" }}>
+                      <Box
+                        sx={{
+                          position: "absolute ",
+                          left: "0px",
+                          p: "4px",
+                          top: "0",
+                          marginTop: "2px",
+                          marginLeft: "10px",
+                          bgcolor: "#004d40",
+                          borderRadius: "10%",
+                          color: "white"
+                        }}
+                      >
+                        <Typography>-{item.discountPercentage}%</Typography>
+                      </Box>
+                      <Box sx={{ width: "100%", marginLeft: "30px" }}>
+                        <Typography variant="h5">{item.title}</Typography>
+                        <Typography
+                          m={0.2}
+                          sx={{ fontSize: "11px", color: "#FA6338" }}
+                        >
+                          {item.stock} left in the Store
+                        </Typography>
+                        <Typography m={1} variant="body2">
+                          {item.description}
+                        </Typography>
+                        <Box
+                          m={3}
+                          sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            width: "100%"
+                          }}
+                        >
+                          <Stack
+                            sx={{ position: "absolute ", right: "11px" }}
+                            spacing={20}
+                            direction="row"
+                          >
+                            <Box>
+                              <Typography
+                                variant="body2"
+                                sx={{ color: "#FA6338" }}
+                              >
+                                $
+                                {(
+                                  (item.price * item.discountPercentage) /
+                                  100
+                                ).toFixed(2)}
+                              </Typography>
+                              <Typography
+                                variant="body2"
+                                sx={{
+                                  textDecoration: "line-through",
+                                  color: "grey"
+                                }}
+                              >
+                                ${item.price}
+                              </Typography>
+                            </Box>
+                            <Box sx={{ display: "flex" }}>
+                              {item.quantity === 1 ? (
+                                <Button
+                                  disabled
+                                  variant="contained"
+                                  sx={{ borderRadius: "12px", height: "25px" }}
+                                >
+                                  <RemoveIcon />
+                                </Button>
+                              ) : (
+                                <Button
+                                  color="error"
+                                  variant="outlined"
+                                  sx={{ borderRadius: "12px", height: "25px" }}
+                                  onClick={() =>
+                                    handleRemove(item.id, item.quantity)
+                                  }
+                                >
+                                  <RemoveIcon />
+                                </Button>
+                              )}
+
+                              <Paper
+                                sx={{ borderRadius: "12px", height: "25px" }}
+                              >
+                                <Typography
+                                  sx={{
+                                    marginLeft: "25px",
+                                    paddingRight: "25px"
+                                  }}
+                                >
+                                  {item.quantity}
+                                </Typography>
+                              </Paper>
+                              <Button
+                                color="success"
+                                variant="outlined"
+                                sx={{ borderRadius: "12px", height: "25px" }}
+                                onClick={() => addToCart(item)}
+                              >
+                                <AddIcon />
+                              </Button>
+                            </Box>
+                            <Typography>
+                              $
+                              {(
+                                (item.price *
+                                  item.quantity *
+                                  item.discountPercentage) /
+                                100
+                              ).toFixed(2)}
+                            </Typography>
+                          </Stack>
+                        </Box>
+                        <IconButton aria-label="add to favorites">
+                          {favoriteList.find((x) => x.id === item.id) ? (
+                            <>
+                              <FavoriteIcon
+                                sx={{ fontSize: "20px" }}
+                                color="error"
+                                onClick={() => removeFromFav(item)}
+                              />
+                              <Typography sx={{ fontSize: "10px", m: "4px" }}>
+                                Saved
+                              </Typography>
+                            </>
+                          ) : (
+                            <>
+                              <FavoriteBorderTwoToneIcon
+                                sx={{ fontSize: "20px" }}
+                                color="error"
+                                onClick={() => addToFavorite(item)}
+                              />
+                              <Typography sx={{ fontSize: "10px", m: "4px" }}>
+                                Save to later
+                              </Typography>
+                            </>
+                          )}
+                        </IconButton>
+                        <Tooltip title="Remove" placement="right">
+                          <IconButton>
+                            <DeleteForeverIcon
+                              sx={{ m: "5px", fontSize: "20px" }}
+                              onClick={() => deleteItem(item.id)}
+                            />
+                          </IconButton>
+                        </Tooltip>
+                      </Box>
+                    </CardContent>
+                  </CardActionArea>
+                </Box>
+              </Card>
+            </Box>
+          ))}
+        </Box>
+        {cart.length !== 0 && (
+          <Box m={1.5} gridColumn="span 3">
+            <Paper>
+              <Box m={2}>
+                <Typography variant="h6">Order Sumarry</Typography>
+                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                  <Typography variant="caption">Items:</Typography>
+                  <Typography>
+                    <b>{sum}</b>
+                  </Typography>
+                </Box>
+                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                  <Typography variant="caption">Shipping:</Typography>
+                  <Typography>
+                    <b>$50</b>
+                  </Typography>
+                </Box>
+                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                  <Typography variant="caption">Subtotal:</Typography>
+                  <Typography>
+                    <b>${total}</b>
+                  </Typography>
+                </Box>
+                <LINK href="/CheckOut" underline="hover">
+                  <Box
+                    m={1}
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      bgcolor: "#004d40",
+                      height: "50px"
+                    }}
+                  >
+                    <Button sx={{ color: "white" }}>Checkout NOW</Button>
+                  </Box>
+                </LINK>
+              </Box>
+            </Paper>
+          </Box>
+        )}
+      </Box>
+    </Box>
   );
 }

@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import {
   query,
@@ -13,6 +12,16 @@ import { IdContext } from "../Context/IdContext";
 import { OrdersContext } from "../Context/OrdersContext";
 import { UserContextType } from "../Context/IdContext";
 import { OrdersType } from "../Context/OrdersContext";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Avatar,
+  Box,
+  Divider,
+  Typography
+} from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 export default function MyOrders() {
   const { userId } = useContext(IdContext) as UserContextType;
@@ -42,29 +51,80 @@ export default function MyOrders() {
   }, [userId, count]);
 
   return (
-    <div className="orders">
-      <div className="center-allOrders">
-        <h1 className="allOrders">All orders {count}</h1>
-      </div>
+    <Box sx={{ marginTop: "85px" }}>
+      <Box m={1}>
+        <Typography>
+          <b>Orders {count}</b>
+        </Typography>
+        <Typography variant="caption">View your order history... </Typography>
+      </Box>
       {orders.map((x) => (
-        <div key={x.Id}>
-          <Link to={`/OrderDetails/${x.Id}`} className="orderDecoration">
-            <div className="orders-container">
-              <div className="nameAndAddress">
-                <h1 className="FirstName">
-                  Name: {x.shippingDetails.FirstName}
-                  {x.shippingDetails.LastName}
-                </h1>
-              </div>
-              <h1 className="space">Items: ({x.totalItems})</h1>
-              <h1 className="space">Cash: ${x.cash}</h1>
-              <h1 className="date">{x.time.toDate().toDateString()}</h1>
-              <br />
-            </div>
-          </Link>
-        </div>
+        <Box m={1} key={x.Id}>
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <Typography
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  paddingRight: "15px"
+                }}
+                variant="caption"
+              >
+                Placed on {x.time.toDate().toDateString()}
+              </Typography>
+              {x.item.map((item) => (
+                <Box m={2} sx={{ display: "flex" }}>
+                  <Avatar alt={item.title} src={item.images[0]} />
+                  <Box>
+                    <Typography m={1} variant="body1">
+                      {item.title}
+                    </Typography>
+                  </Box>
+                </Box>
+              ))}
+            </AccordionSummary>
+            <AccordionDetails>
+              <Divider />
+              {x.item.map((a) => (
+                <Box sx={{ display: "flex" }}>
+                  <Typography m={1} variant="body2">
+                    <b>{a.title}:</b>
+                  </Typography>
+                  <Typography m={1} variant="body2">
+                    {a.description}
+                  </Typography>
+                  {a.quantity !== 1 && (
+                    <Typography sx={{ mt: "8px" }} variant="caption">
+                      ({a.quantity} of this item)
+                    </Typography>
+                  )}
+                </Box>
+              ))}
+              <Box m={1}>
+                <Typography>
+                  <b>Delivery address</b>
+                </Typography>
+                <Typography>
+                  {x.shippingDetails.FirstName} {x.shippingDetails.LastName}
+                </Typography>
+                <Typography>
+                  {x.shippingDetails.Address}, {x.shippingDetails.State},{" "}
+                  {x.shippingDetails.City}
+                </Typography>
+                <Typography>{x.shippingDetails.Mobile}</Typography>
+                <Typography>
+                  <b>$</b>
+                  {x.cash}
+                </Typography>
+              </Box>
+            </AccordionDetails>
+          </Accordion>
+        </Box>
       ))}
-    </div>
+    </Box>
   );
 }
-//x.map((z) => z.title

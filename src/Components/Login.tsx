@@ -1,17 +1,26 @@
 import React, { ChangeEvent } from "react";
-import { FcGoogle } from "react-icons/fc";
-import { GoMarkGithub } from "react-icons/go";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { auth, provider } from "../firebaseConfig";
-import { BsFacebook } from "react-icons/bs";
+import GoogleIcon from "@mui/icons-material/Google";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import GitHubIcon from "@mui/icons-material/GitHub";
 import {
   signInWithEmailAndPassword,
   signInWithPopup,
   GithubAuthProvider,
   FacebookAuthProvider
 } from "firebase/auth";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import {
+  Box,
+  Typography,
+  Divider,
+  Stack,
+  TextField,
+  Button,
+  Link
+} from "@mui/material";
 
 interface props {
   setIsAuth: React.Dispatch<React.SetStateAction<boolean>>;
@@ -46,7 +55,7 @@ export default function Login({ setIsAuth }: props) {
         //}))
 
         toast.success(
-          "Login successfully, You will now automatically got to the Shop"
+          "Login successfully, You will now automatically go to the Shop"
         );
         // localStorage.setItem("isAuth", true);
         setTimeout(() => {
@@ -103,67 +112,100 @@ export default function Login({ setIsAuth }: props) {
   };
 
   return (
-    <div className="login">
+    <div className="check-container">
       <ToastContainer />
-      <div className="loginContainer">
-        <h1 className="welcomeBack">welcome back!</h1>
-        <div className="loginData">
-          <input
-            className="loginEmail"
-            type="text"
-            placeholder="Email...."
+      <Box
+        sx={{
+          color: "black"
+        }}
+      >
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Typography variant="h6">
+            <b>welcome back!</b>
+          </Typography>
+        </Box>
+        <Divider sx={{ m: "5px" }} />
+        <Stack spacing={1}>
+          <TextField
             onChange={handleLoginInput}
-            name="Email"
             value={dataLogin.Email}
+            name="Email"
+            variant="filled"
+            required
+            label="Email"
+            color="success"
           />
-        </div>
-        <input
-          className="loginPassword"
-          type="password"
-          placeholder="Password"
-          onChange={handleLoginInput}
-          name="Password"
-          value={dataLogin.Password}
-        />
-        <div className="LOGINDiv">
-          <button className="LOGIN" onClick={handleLogin}>
-            Login
-          </button>
-        </div>
-        <div className="forget">
-          <Link to="/ResetPassword" className="ResetPassword">
-            Forget your password?
-          </Link>
-        </div>
-        <h1 className="or">______Or_______</h1>
+          <TextField
+            onChange={handleLoginInput}
+            value={dataLogin.Password}
+            variant="filled"
+            label="Password"
+            required
+            type="password"
+            color="success"
+            name="Password"
+          />
+        </Stack>
 
-        <div className="with">
-          <div className="githubDiv">
-            <FcGoogle className="google" />
-            <button className="googleLogin" onClick={googleSignIn}>
-              Login With Google
-            </button>
-          </div>
-          <div className="githubDiv">
-            <BsFacebook className="facebook" />
-            <button className="facebook-btn" onClick={facebookLogin}>
-              Login With Facebook
-            </button>
-          </div>
-          <div className="githubDiv">
-            <GoMarkGithub className="github" />
-            <button className="githubLogin" onClick={githubLogin}>
-              Login With GitHub
-            </button>
-          </div>
-        </div>
-        <h1 className="register">
-          Don't have an account?
-          <Link to="/SignUp">
-            <button className="goRegister">Sign Up</button>
-          </Link>
-        </h1>
-      </div>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            bgcolor: "#004d40",
+            height: "50px",
+            marginTop: "17px"
+          }}
+        >
+          <Button onClick={handleLogin} sx={{ color: "white" }}>
+            Sign in
+          </Button>
+        </Box>
+        <Link
+          color="inherit"
+          variant="caption"
+          href="/ResetPassword"
+          underline="hover"
+        >
+          Forget your password?
+        </Link>
+        <Divider>
+          <Typography variant="body2">or</Typography>
+        </Divider>
+        <Stack spacing={2} direction="row" >
+          <Button
+                      variant="outlined"
+                      sx={{color:"black"}}
+            onClick={googleSignIn}
+            startIcon={<GoogleIcon sx={{color:"orange"}}/>}
+          >
+            Login With Google
+          </Button>
+          <Button
+            onClick={facebookLogin}
+            variant="outlined"
+            sx={{color:"black"}}
+            startIcon={<FacebookIcon sx={{color:"blue"}}/>}
+          >
+            Login With Facebook
+          </Button>
+          <Button        sx={{color:"black"}}     variant="outlined"
+ onClick={githubLogin} startIcon={<GitHubIcon  />}>
+            Login With GitHub
+          </Button>
+        </Stack>
+        <Typography m={1} variant="caption">
+          <b> Don't have an account?</b>
+        </Typography>
+        <Link
+          href="/SignUp"
+          color="inherit"
+          variant="caption"
+          underline="hover"
+          sx={{ color: "#004d40" }}
+        >
+          Sign Up
+        </Link>
+      </Box>
     </div>
   );
 }

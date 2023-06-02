@@ -3,7 +3,9 @@ import Product from "./Product";
 import { useContext } from "react";
 import { ProductsContext } from "../Context/ProductsContext";
 import { ProductsType } from "../Context/ProductsContext";
-import { FcSearch } from "react-icons/fc";
+import { Box, Typography } from "@mui/material";
+import Category from "./Category";
+import PlayForWorkIcon from "@mui/icons-material/PlayForWork";
 
 export default function Shop() {
   const { ourShop } = useContext(ProductsContext) as ProductsType;
@@ -26,28 +28,22 @@ export default function Shop() {
   );
 
   return (
-    <div className="center">
-      <div className="search-div">
-        <input
-          className="search-input"
-          placeholder="Search here..."
-          type="text"
-          value={search}
-          name="search"
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <FcSearch className="search-icon" />
-      </div>
-
-      {canNotFind}
-      <div className="theShop">
+    <div>
+      <Category />
+      <Box>
+        <Typography variant="h5" sx={{ color: "#004d40",display:"flex", justifyContent:" center" }}>
+          All Items
+          <PlayForWorkIcon sx={{ paddingTop: "2px" }} />
+        </Typography>
+      </Box>
+      <Box sx={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
         {filter.map((item) => (
-          <div key={item.id}>
+          <Box sx={{ m: 4, maxWidth: "250px" }} key={item.id}>
             <Product item={item} />
-          </div>
+          </Box>
         ))}
         ;
-      </div>
+      </Box>
     </div>
   );
 }

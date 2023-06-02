@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { db } from "../firebaseConfig";
 import { collection, addDoc, Timestamp } from "firebase/firestore";
 import { toast } from "react-toastify";
@@ -10,6 +10,14 @@ import { CartContext } from "../Context/CartContext";
 import { CartType } from "../Context/CartContext";
 import { ProductType } from "../Type";
 import { UserContextType } from "../Context/IdContext";
+import {
+  Box,
+  Button,
+  Divider,
+  Stack,
+  TextField,
+  Typography
+} from "@mui/material";
 
 export default function CheckOut() {
   const { userId } = useContext(IdContext) as UserContextType;
@@ -22,7 +30,6 @@ export default function CheckOut() {
     State: "",
     Address: ""
   });
-
   let navigate = useNavigate();
 
   const handleInput = (
@@ -68,90 +75,97 @@ export default function CheckOut() {
 
   return (
     <div className="check-container">
-      <div className="details">
-        <div className="first-part">
-          <p className="shipping">Shipping Details</p>
-          <p className="itemsNumber">
+      <Box
+        sx={{
+          color: "black",
+          flexDirection: "column"
+        }}
+      >
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Typography variant="h6">
+            <b>Shipping Details</b>
+          </Typography>
+          <Typography variant="caption">
             ({sum}) {sum === 1 ? "Item" : "Items"}, ${total}
-          </p>
-        </div>
-        <div className="first">
-          <div className="colum">
-            <label className="label-first">First name</label>
+          </Typography>
+        </Box>
 
-            <input
-              onChange={handleInput}
-              type="text"
-              className="firstName"
+        <Divider />
+        <Stack sx={{ m: "17px 0" }} spacing={4}>
+          <Stack direction="row" spacing={3}>
+            <TextField
+              sx={{ width: "265px" }}
+              required
+              label="First Name"
               name="FirstName"
+              color="success"
+              onChange={handleInput}
               value={shippingDetails.FirstName}
             />
-          </div>
-          <div className="colum">
-            <label className="label-first">Last name</label>
-            <input
-              name="LastName"
+            <TextField
               value={shippingDetails.LastName}
               onChange={handleInput}
-              type="text"
-              className="firstName"
+              sx={{ width: "265px" }}
+              required
+              label="Last Name"
+              color="success"
+              name="LastName"
             />
-          </div>
-          <div className="colum">
-            <label>Mobile</label>
-            <input
-              name="Mobile"
-              value={shippingDetails.Mobile}
-              onChange={handleInput}
-              type="number"
-              className="firstName"
-            />
-          </div>
-        </div>
-        <div className="second-part">
-          <div className="colum">
-            <label>City</label>
-            <input
-              name="City"
-              value={shippingDetails.City}
-              onChange={handleInput}
-              type="text"
-              className="firstName"
-            />
-          </div>
-          <div className="colum">
-            <label>State</label>
-            <input
-              name="State"
-              value={shippingDetails.State}
-              onChange={handleInput}
-              type="text"
-              className="firstName"
-            />
-          </div>
-        </div>
-        <div className="address">
-          <label>Address</label>
-          <textarea
-            name="Address"
+          </Stack>
+        </Stack>
+        <Stack>
+          <TextField
+            value={shippingDetails.Mobile}
+            onChange={handleInput}
+            label="Phone Number"
+            required
+            type="number"
+            color="success"
+            name="Mobile"
+          />
+        </Stack>
+        <Stack sx={{ m: "17px 0" }}>
+          <TextField
+            label="Address"
             value={shippingDetails.Address}
             onChange={handleInput}
-            className="address-input"
-          ></textarea>
-        </div>
-        <div className="handle-btn">
-          <div className="backTOCart">
-            <Link className="style" to="/Cart">
-              <button className="backCart">Back to Cart</button>
-            </Link>
-          </div>
-          <div className="placeOrder">
-            <button onClick={() => placeOrder(cart)} className="backCart">
-              Place Order
-            </button>
-          </div>
-        </div>
-      </div>
+            name="Address"
+          />
+        </Stack>
+        <Stack direction="row" spacing={3}>
+          <TextField
+            sx={{ width: "265px" }}
+            required
+            label="State"
+            value={shippingDetails.State}
+            onChange={handleInput}
+            color="success"
+            name="State"
+          />
+          <TextField
+            value={shippingDetails.City}
+            onChange={handleInput}
+            sx={{ width: "265px" }}
+            required
+            label="City"
+            name="City"
+            color="success"
+          />
+        </Stack>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            bgcolor: "#004d40",
+            height: "50px",
+            marginTop: "17px"
+          }}
+        >
+          <Button onClick={() => placeOrder(cart)} sx={{ color: "white" }}>
+            Place Order
+          </Button>
+        </Box>
+      </Box>
     </div>
   );
 }

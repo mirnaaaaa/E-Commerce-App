@@ -1,13 +1,16 @@
 import React, { createContext, useEffect, useState } from "react";
 import { auth } from "../firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
+
 type ChildrenType = {
   children: React.ReactNode;
 };
+
 export type UserContextType = {
   userId: string | number | null;
   setUserId: React.Dispatch<React.SetStateAction<string | number | null>>;
 };
+
 export const IdContext = createContext<UserContextType | null>(null);
 
 export const IdContextProvider = ({ children }: ChildrenType) => {
