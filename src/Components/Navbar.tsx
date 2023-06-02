@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { auth } from "../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { signOut, onAuthStateChanged } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useContext } from "react";
 import { CartContext } from "../Context/CartContext";
 import { FavoriteContext } from "../Context/FavoriteContext";
@@ -10,7 +10,6 @@ import { FavoriteType } from "../Context/FavoriteContext";
 import { CartType } from "../Context/CartContext";
 import {
   AppBar,
-  Link,
   Button,
   Stack,
   Toolbar,
@@ -63,8 +62,7 @@ export default function Navbar({ isAuth, setIsAuth }: props) {
   }, [setIsAuth]);
 
   const LINK = styled(Link)({
-    color:"inherit",
-    underline:"hover"
+    color:"inherit"
   });
 
   return (
@@ -87,32 +85,32 @@ export default function Navbar({ isAuth, setIsAuth }: props) {
             </Typography>
           </Stack>
           <Stack direction="row" spacing={3}>
-            <LINK href="/">
+            <Link to="/" >
               <Typography>Home</Typography>
-            </LINK>
-            <LINK href="/MyOrder">
+            </Link>
+            <Link to="/MyOrder" >
               <Typography>myOrders</Typography>
-            </LINK>
+            </Link>
           </Stack>
           <Stack spacing={3} direction="row">
-            <LINK href="/Fav">
+            <Link to="/Fav">
               <Badge color="error" badgeContent={favoriteList.length}>
                 <FavoriteBorderIcon />
               </Badge>
-            </LINK>
-            <LINK href="/Cart">
+            </Link>
+            <Link to="/Cart">
               <Badge color="error" badgeContent={sum}>
                 <ShoppingCartCheckoutIcon />
               </Badge>
-            </LINK>
+            </Link>
           </Stack>
           <Stack direction="row" spacing={1}>
             {!isAuth ? (
               <>
-                <LINK           
- href="/Login" >
+                <Link           
+ to="/Login" >
                   LOGIN
-                </LINK>
+                </Link>
               </>
             ) : (
               <>
