@@ -27,9 +27,9 @@ export default function Category() {
           paddingBottom: "50px"
         }}
       >
-        <Stack m={1} sx={{ display: "flex", alignItems: "center" }}>
+        <Stack m={1} display= "flex"  alignItems="center" >
           <Stack spacing={4} direction="row">
-            <Typography variant="h5" sx={{ color: "#004d40" }}>
+            <Typography variant="h5"  color="#004d40">
               Shop by Category
             </Typography>
             <Button variant="outlined" onClick={() => choose("groceries")}>

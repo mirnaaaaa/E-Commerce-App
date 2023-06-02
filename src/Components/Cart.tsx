@@ -20,8 +20,15 @@ import {
   Typography,
   Tooltip,
   Paper,
-  Stack} from "@mui/material";
+  Stack,
+  styled
+} from "@mui/material";
 import { Link } from "react-router-dom";
+
+const StyledBox = styled(Box)({
+  display: "flex",
+  justifyContent: "space-between"
+});
 
 export default function Cart() {
   const { cart, setCart, addToCart, total, sum } = useContext(
@@ -49,11 +56,10 @@ export default function Cart() {
   };
 
   return (
-    <Box sx={{ marginTop: "68px" }}>
+    <Box my={18}>
       {cart.length === 0 && (
         <Box
           sx={{
-            paddingTop: "80px",
             color: "#004d40",
             display: "flex",
             flexDirection: "column",
@@ -143,10 +149,7 @@ export default function Cart() {
                             direction="row"
                           >
                             <Box>
-                              <Typography
-                                variant="body2"
-                                sx={{ color: "#FA6338" }}
-                              >
+                              <Typography color="#FA6338" variant="body2">
                                 $
                                 {(
                                   (item.price * item.discountPercentage) /
@@ -155,15 +158,15 @@ export default function Cart() {
                               </Typography>
                               <Typography
                                 variant="body2"
+                                color="grey"
                                 sx={{
-                                  textDecoration: "line-through",
-                                  color: "grey"
+                                  textDecoration: "line-through"
                                 }}
                               >
                                 ${item.price}
                               </Typography>
                             </Box>
-                            <Box sx={{ display: "flex" }}>
+                            <Box display="flex">
                               {item.quantity === 1 ? (
                                 <Button
                                   disabled
@@ -219,16 +222,11 @@ export default function Cart() {
                         </Box>
                         <IconButton aria-label="add to favorites">
                           {favoriteList.find((x) => x.id === item.id) ? (
-                            <>
-                              <FavoriteIcon
-                                sx={{ fontSize: "20px" }}
-                                color="error"
-                                onClick={() => removeFromFav(item)}
-                              />
-                              <Typography sx={{ fontSize: "10px", m: "4px" }}>
-                                Saved
-                              </Typography>
-                            </>
+                            <FavoriteIcon
+                              sx={{ fontSize: "20px" }}
+                              color="error"
+                              onClick={() => removeFromFav(item)}
+                            />
                           ) : (
                             <>
                               <FavoriteBorderTwoToneIcon
@@ -263,24 +261,24 @@ export default function Cart() {
             <Paper>
               <Box m={2}>
                 <Typography variant="h6">Order Sumarry</Typography>
-                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                <StyledBox>
                   <Typography variant="caption">Items:</Typography>
                   <Typography>
                     <b>{sum}</b>
                   </Typography>
-                </Box>
-                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                </StyledBox>
+                <StyledBox>
                   <Typography variant="caption">Shipping:</Typography>
                   <Typography>
                     <b>$50</b>
                   </Typography>
-                </Box>
-                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                </StyledBox>
+                <StyledBox>
                   <Typography variant="caption">Subtotal:</Typography>
                   <Typography>
                     <b>${total}</b>
                   </Typography>
-                </Box>
+                </StyledBox>
                 <Link to="/CheckOut" className="link">
                   <Box
                     m={1}

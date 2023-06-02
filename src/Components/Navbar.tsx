@@ -63,7 +63,7 @@ export default function Navbar({ isAuth, setIsAuth }: props) {
   return (
     <div>
       <AppBar sx={{ background: "#004d40" }}>
-        <Toolbar
+        <Toolbar 
           sx={{ display: "flex", justifyContent: "space-between", m: "2px" }}
         >
           <Stack direction="row" spacing={1}>
@@ -75,7 +75,7 @@ export default function Navbar({ isAuth, setIsAuth }: props) {
             >
               M
             </Avatar>
-            <Typography variant="h4">
+            <Typography variant="h4" >
               Mirna's <b style={{ color: "#80cbc4" }}>Shop</b>
             </Typography>
           </Stack>

@@ -89,13 +89,14 @@ export default function Fav() {
                 </Box>
                 <Box
                   m={0.8}
+                  color="white"
                   sx={{
                     position: "absolute ",
                     left: "0px",
                     p: "4px",
                     bgcolor: "#004d40",
                     borderRadius: "10%",
-                    color: "white"
+                    
                   }}
                 >
                   <Typography>-{item.discountPercentage}%</Typography>
