@@ -87,10 +87,10 @@ export default function Navbar({ isAuth, setIsAuth }: props) {
             </Typography>
           </Stack>
           <Stack direction="row" spacing={3}>
-            <LINK href="/" underline="hover">
+            <LINK href="/">
               <Typography>Home</Typography>
             </LINK>
-            <LINK href="/MyOrder" underline="hover">
+            <LINK href="/MyOrder">
               <Typography>myOrders</Typography>
             </LINK>
           </Stack>
