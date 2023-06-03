@@ -156,17 +156,17 @@ export default function Login({ setIsAuth }: props) {
         <Stack spacing={2} direction="row">
           <Button
             variant="outlined"
-            sx={{ color: "black" }}
+            color="warning"
             onClick={googleSignIn}
-            startIcon={<GoogleIcon sx={{ color: "orange" }} />}
+            startIcon={<GoogleIcon />}
           >
             Login With Google
           </Button>
           <Button
             onClick={facebookLogin}
             variant="outlined"
-            sx={{ color: "black" }}
-            startIcon={<FacebookIcon sx={{ color: "blue" }} />}
+            color="info"
+            startIcon={<FacebookIcon  />}
           >
             Login With Facebook
           </Button>

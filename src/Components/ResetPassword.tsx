@@ -60,12 +60,29 @@ export default function ResetPassword() {
             justifyContent: "space-between"
           }}
         >
-          <Link className="linkBlack"    to="/Login">
-            <Button variant="outlined" color="success">
+          <Link className="linkBlack" to="/Login">
+            <Button
+              variant="outlined"
+              color="success"
+              sx={{
+                "&:hover": {
+                  fontSize: "15px"
+                }
+              }}
+            >
               CANCEL
             </Button>
           </Link>
-          <Button variant="outlined" color="success" onClick={reset}>
+          <Button
+            variant="outlined"
+            color="success"
+            onClick={reset}
+            sx={{
+              "&:hover": {
+                fontSize: "15px"
+              }
+            }}
+          >
             Continue
           </Button>
         </Box>
