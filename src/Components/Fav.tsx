@@ -15,6 +15,7 @@ import {
   Typography
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import { Link } from "react-router-dom";
 
 export default function Fav() {
   const { removeFromFav, favoriteList, setFavoriteList } = useContext(
@@ -48,6 +49,7 @@ export default function Fav() {
               to your wishlist! All your saved items will appear here.
             </Typography>
             <Box m={4} >
+            <Link to="/" className="link">
             <Button variant="contained" sx={{bgcolor:"#004d40","&:hover": {
                 bgcolor: "#80cbc4",
                 fontSize: "15px",
@@ -55,6 +57,7 @@ export default function Fav() {
               } }}>
               START SHOPPING
             </Button>
+            </Link>
           </Box>
           </Box>
         </Box>

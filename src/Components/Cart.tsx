@@ -71,19 +71,21 @@ export default function Cart() {
             What are you waiting for?
           </Typography>
           <Box m={2}>
-            <Button
-              variant="contained"
-              sx={{
-                bgcolor: "#004d40",
-                "&:hover": {
-                  bgcolor: "#80cbc4",
-                  fontSize: "15px",
-                  color: "#004d40"
-                }
-              }}
-            >
-              START SHOPPING
-            </Button>
+            <Link to="/" className="link">
+              <Button
+                variant="contained"
+                sx={{
+                  bgcolor: "#004d40",
+                  "&:hover": {
+                    bgcolor: "#80cbc4",
+                    fontSize: "15px",
+                    color: "#004d40"
+                  }
+                }}
+              >
+                START SHOPPING
+              </Button>
+            </Link>
           </Box>
         </Box>
       )}
