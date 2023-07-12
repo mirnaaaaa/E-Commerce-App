@@ -3,11 +3,6 @@ import { auth } from "../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import { useNavigate, Link } from "react-router-dom";
-import { useContext } from "react";
-import { CartContext } from "../Context/CartContext";
-import { FavoriteContext } from "../Context/FavoriteContext";
-import { FavoriteType } from "../Context/FavoriteContext";
-import { CartType } from "../Context/CartContext";
 import {
   AppBar,
   Button,
@@ -19,6 +14,10 @@ import {
 } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
+import { useSelector, useDispatch } from "react-redux";
+import { getId } from "../features/Shop";
+import { Logout } from "../features/Cart";
+import { clearFav } from "../features/Favorite";
 interface props {
   isAuth: boolean;
   setIsAuth: React.Dispatch<React.SetStateAction<boolean>>;
@@ -26,21 +25,39 @@ interface props {
 
 export default function Navbar({ isAuth, setIsAuth }: props) {
   const [name, setName] = useState<string>("");
-  const { favoriteList, setFavoriteList } = useContext(
-    FavoriteContext
-  ) as FavoriteType;
-  const { setCart, sum } = useContext(CartContext) as CartType;
   const [user] = useAuthState(auth);
 
+  const Total = useSelector((state: any) => state.cart.totalQuantity);
+  const favoriteList = useSelector((state: any) => state.favorite.favorite);
+
   let navigate = useNavigate();
+  const dispatch: any = useDispatch();
+
+  useEffect(() => {
+    const Auth = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        dispatch(
+          getId({
+            id: user.uid
+          })
+        );
+      } else {
+        dispatch(Logout());
+        dispatch(clearFav());
+      }
+    });
+    return () => {
+      Auth();
+    };
+  }, [dispatch]);
 
   const handleLogout = async () => {
     await signOut(auth).then(() => {
       navigate("/Login");
       localStorage.clear();
       setIsAuth(false);
-      setCart([]);
-      setFavoriteList([]);
+      // setCart([]);
+      // setFavoriteList([]);
     });
   };
 
@@ -63,7 +80,7 @@ export default function Navbar({ isAuth, setIsAuth }: props) {
   return (
     <div>
       <AppBar sx={{ background: "#004d40" }}>
-        <Toolbar 
+        <Toolbar
           sx={{ display: "flex", justifyContent: "space-between", m: "2px" }}
         >
           <Stack direction="row" spacing={1}>
@@ -75,7 +92,7 @@ export default function Navbar({ isAuth, setIsAuth }: props) {
             >
               M
             </Avatar>
-            <Typography variant="h4" >
+            <Typography variant="h4">
               Mirna's <b style={{ color: "#80cbc4" }}>Shop</b>
             </Typography>
           </Stack>
@@ -94,7 +111,7 @@ export default function Navbar({ isAuth, setIsAuth }: props) {
               </Badge>
             </Link>
             <Link to="/Cart" className="link">
-              <Badge color="error" badgeContent={sum}>
+              <Badge color="error" badgeContent={Total}>
                 <ShoppingCartCheckoutIcon />
               </Badge>
             </Link>

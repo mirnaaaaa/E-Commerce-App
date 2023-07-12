@@ -1,10 +1,5 @@
 import React from "react";
-import { FavoriteContext } from "../Context/FavoriteContext";
-import { CartContext } from "../Context/CartContext";
-import { useContext } from "react";
-import { CartType } from "../Context/CartContext";
-import { ProductType } from "../Type";
-import { FavoriteType } from "../Context/FavoriteContext";
+import { ProductType } from "../Types/ProductsType";
 import {
   Box,
   Card,
@@ -17,15 +12,16 @@ import {
 } from "@mui/material";
 import FavoriteBorderTwoToneIcon from "@mui/icons-material/FavoriteBorderTwoTone";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import { addToCart } from "../features/Cart";
+import { useDispatch, useSelector } from "react-redux";
+import { removeFromFav, addToFav } from "../features/Favorite";
 interface PostsProps {
   item: ProductType;
 }
 
 export default function SelectCategory({ item }: PostsProps) {
-  const { removeFromFav, addToFavorite, favoriteList } = useContext(
-    FavoriteContext
-  ) as FavoriteType;
-  const { addToCart } = useContext(CartContext) as CartType;
+  const favoriteList = useSelector((state: any) => state.favorite.favorite);
+  const dispatch: any = useDispatch();
 
   return (
     <Card sx={{ borderRadius: "30px", height: "100%" }}>
@@ -40,12 +36,12 @@ export default function SelectCategory({ item }: PostsProps) {
           }}
         >
           <IconButton aria-label="add to favorites">
-            {favoriteList.find((x) => x.id === item.id) ? (
-              <FavoriteIcon color="error" onClick={() => removeFromFav(item)} />
+            {favoriteList.find((x:any) => x.id === item.id) ? (
+              <FavoriteIcon color="error" onClick={() => dispatch(removeFromFav(item.id))} />
             ) : (
               <FavoriteBorderTwoToneIcon
                 color="error"
-                onClick={() => addToFavorite(item)}
+                onClick={() => dispatch(addToFav(item))}
               />
             )}
           </IconButton>
@@ -85,7 +81,7 @@ export default function SelectCategory({ item }: PostsProps) {
                 color: "#004d40"
               }
             }}
-            onClick={() => addToCart(item)}
+            onClick={() => dispatch(addToCart(item))}
           >
             Add To Cart
           </Button>

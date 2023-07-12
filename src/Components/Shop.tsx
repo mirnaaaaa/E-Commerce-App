@@ -1,18 +1,17 @@
 import React, { useState } from "react";
 import Product from "./Product";
-import { useContext } from "react";
-import { ProductsContext } from "../Context/ProductsContext";
-import { ProductsType } from "../Context/ProductsContext";
 import { Box, Typography } from "@mui/material";
 import Category from "./Category";
 import PlayForWorkIcon from "@mui/icons-material/PlayForWork";
+import { useSelector } from "react-redux";
 
 export default function Shop() {
-  const { ourShop } = useContext(ProductsContext) as ProductsType;
   const [search, setSearch] = useState<string>("");
 
+  const ourShop = useSelector((state: any) => state.shop.value.products);
+
   const filter = ourShop.filter(
-    (item) =>
+    (item: any) =>
       item.title.toLowerCase().includes(search.toLowerCase()) ||
       item.brand.toLowerCase().includes(search.toLowerCase())
   );
@@ -31,13 +30,16 @@ export default function Shop() {
     <div>
       <Category />
       <Box>
-        <Typography variant="h5" sx={{ color: "#004d40",display:"flex", justifyContent:" center" }}>
+        <Typography
+          variant="h5"
+          sx={{ color: "#004d40", display: "flex", justifyContent: " center" }}
+        >
           All Items
           <PlayForWorkIcon sx={{ paddingTop: "2px" }} />
         </Typography>
       </Box>
       <Box sx={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
-        {filter.map((item) => (
+        {filter.map((item: any) => (
           <Box sx={{ m: 4, maxWidth: "250px" }} key={item.id}>
             <Product item={item} />
           </Box>

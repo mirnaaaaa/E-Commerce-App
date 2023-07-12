@@ -1,4 +1,5 @@
 export type ProductType = {
+    cart: any;
     id: number;
     title: string;
     images: string[];

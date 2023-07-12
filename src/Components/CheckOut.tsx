@@ -4,12 +4,7 @@ import { db } from "../firebaseConfig";
 import { collection, addDoc, Timestamp } from "firebase/firestore";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useContext } from "react";
-import { IdContext } from "../Context/IdContext";
-import { CartContext } from "../Context/CartContext";
-import { CartType } from "../Context/CartContext";
-import { ProductType } from "../Type";
-import { UserContextType } from "../Context/IdContext";
+import { ProductType } from "../Types/ProductsType";
 import {
   Box,
   Button,
@@ -18,10 +13,9 @@ import {
   TextField,
   Typography
 } from "@mui/material";
+import { useSelector } from "react-redux";
 
 export default function CheckOut() {
-  const { userId } = useContext(IdContext) as UserContextType;
-  const { total, sum, cart } = useContext(CartContext) as CartType;
   const [shippingDetails, setShippingDetails] = useState({
     FirstName: "",
     LastName: "",
@@ -30,6 +24,12 @@ export default function CheckOut() {
     State: "",
     Address: ""
   });
+
+  const id = useSelector((state: any) => state.shop.value.id);
+  const cart = useSelector((state: any) => state.cart.cart);
+  const TotalQuantity = useSelector((state: any) => state.cart.totalQuantity);
+  const TotalAmount = useSelector((state: any) => state.cart.totalAmount);
+
   let navigate = useNavigate();
 
   const handleInput = (
@@ -49,13 +49,13 @@ export default function CheckOut() {
     ) {
       toast.error("Please fill all the required fields");
     } else {
-      const items = collection(db, `AllOrders/${userId}/Orders`);
+      const items = collection(db, `AllOrders/${id}/Orders`);
       await addDoc(items, {
         item,
         shippingDetails,
         time: Timestamp.fromDate(new Date()),
-        totalItems: sum,
-        cash: total
+        totalItems: TotalQuantity,
+        cash: TotalAmount.toFixed(2)
       }).then(() => {
         setShippingDetails({
           FirstName: "",
@@ -86,7 +86,8 @@ export default function CheckOut() {
             <b>Shipping Details</b>
           </Typography>
           <Typography variant="caption">
-            ({sum}) {sum === 1 ? "Item" : "Items"}, ${total}
+            ({TotalQuantity}) {TotalQuantity === 1 ? "Item" : "Items"}, $
+            {TotalAmount.toFixed(2)}
           </Typography>
         </Box>
 

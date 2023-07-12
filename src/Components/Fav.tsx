@@ -1,9 +1,4 @@
 import React from "react";
-import { useContext } from "react";
-import { FavoriteContext } from "../Context/FavoriteContext";
-import { CartContext } from "../Context/CartContext";
-import { CartType } from "../Context/CartContext";
-import { FavoriteType } from "../Context/FavoriteContext";
 import {
   Box,
   Button,
@@ -16,16 +11,13 @@ import {
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { Link } from "react-router-dom";
+import { addToCart } from "../features/Cart";
+import { removeFromFav, clearFav } from "../features/Favorite";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Fav() {
-  const { removeFromFav, favoriteList, setFavoriteList } = useContext(
-    FavoriteContext
-  ) as FavoriteType;
-  const { addToCart } = useContext(CartContext) as CartType;
-
-  const removeAll = () => {
-    setFavoriteList([]);
-  };
+  const favoriteList = useSelector((state: any) => state.favorite.favorite);
+  const dispatch: any = useDispatch();
 
   return (
     <Box>
@@ -48,17 +40,23 @@ export default function Fav() {
               Found something you like? Tap on the heart shaped icon to add it
               to your wishlist! All your saved items will appear here.
             </Typography>
-            <Box m={4} >
-            <Link to="/" className="link">
-            <Button variant="contained" sx={{bgcolor:"#004d40","&:hover": {
-                bgcolor: "#80cbc4",
-                fontSize: "15px",
-                color: "#004d40"
-              } }}>
-              START SHOPPING
-            </Button>
-            </Link>
-          </Box>
+            <Box m={4}>
+              <Link to="/" className="link">
+                <Button
+                  variant="contained"
+                  sx={{
+                    bgcolor: "#004d40",
+                    "&:hover": {
+                      bgcolor: "#80cbc4",
+                      fontSize: "15px",
+                      color: "#004d40"
+                    }
+                  }}
+                >
+                  START SHOPPING
+                </Button>
+              </Link>
+            </Box>
           </Box>
         </Box>
       )}
@@ -70,7 +68,7 @@ export default function Fav() {
           paddingTop: "75px"
         }}
       >
-        {favoriteList.map((item) => (
+        {favoriteList.map((item: any) => (
           <Box sx={{ m: 4, maxWidth: "250px" }} key={item.id}>
             <Card sx={{ borderRadius: "30px", height: "100%" }}>
               <CardActionArea sx={{ height: "100%" }}>
@@ -85,7 +83,7 @@ export default function Fav() {
                 >
                   <IconButton
                     aria-label="add to favorites"
-                    onClick={() => removeFromFav(item)}
+                    onClick={() => dispatch(removeFromFav(item.id))}
                   >
                     <FavoriteIcon color="error" />
                   </IconButton>
@@ -98,8 +96,7 @@ export default function Fav() {
                     left: "0px",
                     p: "4px",
                     bgcolor: "#004d40",
-                    borderRadius: "10%",
-                    
+                    borderRadius: "10%"
                   }}
                 >
                   <Typography>-{item.discountPercentage}%</Typography>
@@ -126,7 +123,7 @@ export default function Fav() {
                         color: "#004d40"
                       }
                     }}
-                    onClick={() => addToCart(item)}
+                    onClick={() => dispatch(addToCart(item))}
                   >
                     Add To Cart
                   </Button>
@@ -164,7 +161,7 @@ export default function Fav() {
           <Button
             color="success"
             variant="outlined"
-            onClick={removeAll}
+            onClick={() => dispatch(clearFav())}
             sx={{ m: "25px", width: "15%" }}
           >
             Remove All

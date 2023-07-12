@@ -1,9 +1,4 @@
 import React from "react";
-import { useContext } from "react";
-import { CartContext } from "../Context/CartContext";
-import { FavoriteContext } from "../Context/FavoriteContext";
-import { CartType } from "../Context/CartContext";
-import { FavoriteType } from "../Context/FavoriteContext";
 import FavoriteBorderTwoToneIcon from "@mui/icons-material/FavoriteBorderTwoTone";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
@@ -24,6 +19,9 @@ import {
   styled
 } from "@mui/material";
 import { Link } from "react-router-dom";
+import { deleteItem, removeItem, addToCart } from "../features/Cart";
+import { removeFromFav, addToFav } from "../features/Favorite";
+import { useDispatch, useSelector } from "react-redux";
 
 const StyledBox = styled(Box)({
   display: "flex",
@@ -31,29 +29,9 @@ const StyledBox = styled(Box)({
 });
 
 export default function Cart() {
-  const { cart, setCart, addToCart, total, sum } = useContext(
-    CartContext
-  ) as CartType;
-  const { addToFavorite, removeFromFav, favoriteList } = useContext(
-    FavoriteContext
-  ) as FavoriteType;
-
-  const handleRemove = (id: number, q: number) => {
-    if (q === 1) {
-      const filter = cart.filter((x) => x.id !== id);
-      setCart(filter);
-    } else {
-      const toAdd = cart.map((x) =>
-        x.id === id ? { ...x, quantity: x.quantity - 1 } : x
-      );
-      setCart(toAdd);
-    }
-  };
-
-  const deleteItem = (item: number) => {
-    const filter = cart.filter((x) => x.id !== item);
-    setCart(filter);
-  };
+  const cart = useSelector((state: any) => state.cart);
+  const favoriteList = useSelector((state: any) => state.favorite.favorite);
+  const dispatch: any = useDispatch();
 
   return (
     <Box my={18}>
@@ -91,11 +69,10 @@ export default function Cart() {
       )}
       <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={2}>
         <Box gridColumn="span 9">
-          {cart.map((item) => (
-            <Box m={1.5}>
+          {cart.cart.map((item: any) => (
+            <Box m={1.5} key={item.id}>
               <Card>
                 <Box
-                  key={item.id}
                   sx={{ display: "flex", flexDirection: "row", width: "100%" }}
                 >
                   <CardActionArea sx={{ display: "flex", width: "100%" }}>
@@ -182,9 +159,7 @@ export default function Cart() {
                                   color="error"
                                   variant="outlined"
                                   sx={{ borderRadius: "12px", height: "25px" }}
-                                  onClick={() =>
-                                    handleRemove(item.id, item.quantity)
-                                  }
+                                  onClick={() => dispatch(removeItem(item))}
                                 >
                                   <RemoveIcon />
                                 </Button>
@@ -206,7 +181,7 @@ export default function Cart() {
                                 color="success"
                                 variant="outlined"
                                 sx={{ borderRadius: "12px", height: "25px" }}
-                                onClick={() => addToCart(item)}
+                                onClick={() => dispatch(addToCart(item))}
                               >
                                 <AddIcon />
                               </Button>
@@ -223,18 +198,18 @@ export default function Cart() {
                           </Stack>
                         </Box>
                         <IconButton aria-label="add to favorites">
-                          {favoriteList.find((x) => x.id === item.id) ? (
+                          {favoriteList?.find((x: any) => x.id === item.id) ? (
                             <FavoriteIcon
                               sx={{ fontSize: "20px" }}
                               color="error"
-                              onClick={() => removeFromFav(item)}
+                              onClick={() => dispatch(removeFromFav(item.id))}
                             />
                           ) : (
                             <>
                               <FavoriteBorderTwoToneIcon
                                 sx={{ fontSize: "20px" }}
                                 color="error"
-                                onClick={() => addToFavorite(item)}
+                                onClick={() => dispatch(addToFav(item))}
                               />
                               <Typography sx={{ fontSize: "10px", m: "4px" }}>
                                 Save to later
@@ -243,10 +218,11 @@ export default function Cart() {
                           )}
                         </IconButton>
                         <Tooltip title="Remove" placement="right">
-                          <IconButton>
+                          <IconButton
+                            onClick={() => dispatch(deleteItem(item.id))}
+                          >
                             <DeleteForeverIcon
                               sx={{ m: "5px", fontSize: "20px" }}
-                              onClick={() => deleteItem(item.id)}
                             />
                           </IconButton>
                         </Tooltip>
@@ -258,7 +234,7 @@ export default function Cart() {
             </Box>
           ))}
         </Box>
-        {cart.length !== 0 && (
+        {cart.cart.length !== 0 && (
           <Box m={1.5} gridColumn="span 3">
             <Paper>
               <Box m={2}>
@@ -266,7 +242,7 @@ export default function Cart() {
                 <StyledBox>
                   <Typography variant="caption">Items:</Typography>
                   <Typography>
-                    <b>{sum}</b>
+                    <b>{cart.totalQuantity}</b>
                   </Typography>
                 </StyledBox>
                 <StyledBox>
@@ -278,7 +254,7 @@ export default function Cart() {
                 <StyledBox>
                   <Typography variant="caption">Subtotal:</Typography>
                   <Typography>
-                    <b>${total}</b>
+                    <b>${cart.totalAmount.toFixed(2)}</b>
                   </Typography>
                 </StyledBox>
                 <Link to="/CheckOut" className="link">

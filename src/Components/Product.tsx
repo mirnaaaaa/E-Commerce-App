@@ -1,10 +1,6 @@
 import React from "react";
-import { useContext } from "react";
-import { CartContext } from "../Context/CartContext";
-import { FavoriteContext } from "../Context/FavoriteContext";
-import { CartType } from "../Context/CartContext";
-import { ProductType } from "../Type";
-import { FavoriteType } from "../Context/FavoriteContext";
+import { ProductType } from "../Types/ProductsType";
+import { removeFromFav, addToFav } from "../features/Favorite";
 import FavoriteBorderTwoToneIcon from "@mui/icons-material/FavoriteBorderTwoTone";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import {
@@ -17,15 +13,16 @@ import {
   IconButton,
   Typography
 } from "@mui/material";
+import { addToCart } from "../features/Cart";
+import { useDispatch, useSelector } from "react-redux";
+
 interface PostsProps {
   item: ProductType;
 }
 
 export default function Product({ item }: PostsProps) {
-  const { addToCart } = useContext(CartContext) as CartType;
-  const { addToFavorite, favoriteList, removeFromFav } = useContext(
-    FavoriteContext
-  ) as FavoriteType;
+  const favoriteList = useSelector((state: any) => state.favorite.favorite);
+  const dispatch: any = useDispatch();
 
   return (
     <Card sx={{ borderRadius: "30px", height: "100%" }}>
@@ -39,16 +36,21 @@ export default function Product({ item }: PostsProps) {
             borderRadius: "50%"
           }}
         >
-          <IconButton aria-label="add to favorites">
-            {favoriteList.find((x) => x.id === item.id) ? (
-              <FavoriteIcon color="error" onClick={() => removeFromFav(item)} />
-            ) : (
-              <FavoriteBorderTwoToneIcon
-                color="error"
-                onClick={() => addToFavorite(item)}
-              />
-            )}
-          </IconButton>
+          {favoriteList.find((x:any) => x.id === item.id) ? (
+            <IconButton
+              aria-label="add to favorites"
+              onClick={() => dispatch(removeFromFav(item.id))}
+            >
+              <FavoriteIcon color="error" />
+            </IconButton>
+          ) : (
+            <IconButton
+              aria-label="add to favorites"
+              onClick={() => dispatch(addToFav(item))}
+            >
+              <FavoriteBorderTwoToneIcon color="error" />
+            </IconButton>
+          )}
         </Box>
         <Box
           m={0.8}
@@ -85,7 +87,7 @@ export default function Product({ item }: PostsProps) {
                 color: "#004d40"
               }
             }}
-            onClick={() => addToCart(item)}
+            onClick={() => dispatch(addToCart(item))}
           >
             Add To Cart
           </Button>

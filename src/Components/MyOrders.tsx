@@ -7,11 +7,6 @@ import {
   getCountFromServer
 } from "firebase/firestore";
 import { db } from "../firebaseConfig";
-import { useContext } from "react";
-import { IdContext } from "../Context/IdContext";
-import { OrdersContext } from "../Context/OrdersContext";
-import { UserContextType } from "../Context/IdContext";
-import { OrdersType } from "../Context/OrdersContext";
 import {
   Accordion,
   AccordionDetails,
@@ -22,14 +17,35 @@ import {
   Typography
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { useSelector } from "react-redux";
+import { ProductType } from "../Types/ProductsType";
+
+type shipping = {
+  FirstName: string;
+  LastName: string;
+  Mobile: number;
+  City: string;
+  State: string;
+  Address: string | number;
+};
+
+type Order = {
+  item: ProductType[];
+  shippingDetails: shipping;
+  Id: string | number;
+  cash: number;
+  totalItems: number;
+  time: any;
+};
 
 export default function MyOrders() {
-  const { userId } = useContext(IdContext) as UserContextType;
-  const { orders, setOrders } = useContext(OrdersContext) as OrdersType;
   const [count, setCount] = useState<number>(0);
+  const [orders, setOrders] = useState<Order[]>([]);
+
+  const id = useSelector((state: any) => state.shop.value.id);
 
   const getOrders = () => {
-    const q = query(collection(db, `AllOrders/${userId}/Orders`));
+    const q = query(collection(db, `AllOrders/${id}/Orders`));
     onSnapshot(q, (snap) => {
       let array: any = [];
       snap.forEach((doc) => {
@@ -40,7 +56,7 @@ export default function MyOrders() {
   };
 
   const getCount = async () => {
-    const collectionRef = collection(db, `AllOrders/${userId}/Orders`);
+    const collectionRef = collection(db, `AllOrders/${id}/Orders`);
     const getTheNumbers = await getCountFromServer(collectionRef);
     setCount(getTheNumbers.data().count);
   };
@@ -48,7 +64,7 @@ export default function MyOrders() {
   useEffect(() => {
     getOrders();
     getCount();
-  }, [userId, count]);
+  }, [id, count]);
 
   return (
     <Box sx={{ marginTop: "85px" }}>
@@ -58,7 +74,7 @@ export default function MyOrders() {
         </Typography>
         <Typography variant="caption">View your order history... </Typography>
       </Box>
-      {orders.map((x) => (
+      {orders.map((x: any) => (
         <Box m={1} key={x.Id}>
           <Accordion>
             <AccordionSummary
@@ -76,7 +92,7 @@ export default function MyOrders() {
               >
                 Placed on {x.time.toDate().toDateString()}
               </Typography>
-              {x.item.map((item) => (
+              {x.item.map((item: any) => (
                 <Box m={2} sx={{ display: "flex" }}>
                   <Avatar alt={item.title} src={item.images[0]} />
                   <Box>
@@ -89,7 +105,7 @@ export default function MyOrders() {
             </AccordionSummary>
             <AccordionDetails>
               <Divider />
-              {x.item.map((a) => (
+              {x.item.map((a: any) => (
                 <Box sx={{ display: "flex" }}>
                   <Typography m={1} variant="body2">
                     <b>{a.title}:</b>

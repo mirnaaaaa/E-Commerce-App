@@ -1,17 +1,16 @@
 import React, { useState } from "react";
-import { useContext } from "react";
-import { ProductsContext } from "../Context/ProductsContext";
 import SelectedCategory from "./SelectedCategory";
-import { ProductsType } from "../Context/ProductsContext";
-import { ProductType } from "../Type";
+import { ProductType } from "../Types/ProductsType";
 import { AppBar, Box, Button, Stack, Divider, Typography } from "@mui/material";
+import { useSelector } from "react-redux";
 
 export default function Category() {
-  const { ourShop } = useContext(ProductsContext) as ProductsType;
   const [categories, setCategories] = useState<ProductType[]>([]);
 
+  const ourShop = useSelector((state: any) => state.shop.value.products);
+
   const choose = (item: string) => {
-    const filter = ourShop?.filter((x) => {
+    const filter = ourShop?.filter((x: any) => {
       return x.category === item;
     });
     setCategories(filter);
@@ -27,9 +26,9 @@ export default function Category() {
           paddingBottom: "50px"
         }}
       >
-        <Stack m={1} display= "flex"  alignItems="center" >
+        <Stack m={1} display="flex" alignItems="center">
           <Stack spacing={4} direction="row">
-            <Typography variant="h5"  color="#004d40">
+            <Typography variant="h5" color="#004d40">
               Shop by Category
             </Typography>
             <Button variant="outlined" onClick={() => choose("groceries")}>
